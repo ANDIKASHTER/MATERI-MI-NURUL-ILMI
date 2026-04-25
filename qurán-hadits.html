@@ -1,0 +1,1207 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media Pembelajaran Birrul Walidain - MI Nurul Ilmi</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&amp;family=Amiri:wght@400;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+  :root {
+    --green-bright: #10B981;
+    --green-deep: #059669;
+    --green-light: #D1FAE5;
+    --green-glow: #34D399;
+    --gold: #F59E0B;
+    --gold-light: #FCD34D;
+  }
+  * { scroll-behavior: smooth; }
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #ffffff;
+    color: #1F2937;
+    overflow-x: hidden;
+  }
+  .font-fredoka { font-family: 'Fredoka', sans-serif; }
+  .font-arabic { font-family: 'Amiri', serif; }
+
+  /* Laser glow lines */
+  .laser-glow {
+    position: fixed;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(2px);
+    opacity: 0.6;
+  }
+  .laser-1 {
+    top: 10%; left: -5%;
+    width: 400px; height: 3px;
+    background: linear-gradient(90deg, transparent, #10B981, transparent);
+    transform: rotate(25deg);
+    animation: laserMove 8s ease-in-out infinite;
+    box-shadow: 0 0 20px #10B981, 0 0 40px #34D399;
+  }
+  .laser-2 {
+    top: 40%; right: -5%;
+    width: 350px; height: 2px;
+    background: linear-gradient(90deg, transparent, #34D399, transparent);
+    transform: rotate(-30deg);
+    animation: laserMove 10s ease-in-out infinite 1s;
+    box-shadow: 0 0 15px #34D399;
+  }
+  .laser-3 {
+    bottom: 15%; left: 10%;
+    width: 300px; height: 2px;
+    background: linear-gradient(90deg, transparent, #10B981, transparent);
+    transform: rotate(15deg);
+    animation: laserMove 12s ease-in-out infinite 2s;
+    box-shadow: 0 0 15px #10B981;
+  }
+  .laser-4 {
+    top: 70%; right: 20%;
+    width: 250px; height: 2px;
+    background: linear-gradient(90deg, transparent, #F59E0B, transparent);
+    transform: rotate(-20deg);
+    animation: laserMove 9s ease-in-out infinite 0.5s;
+    box-shadow: 0 0 15px #F59E0B;
+    opacity: 0.4;
+  }
+  @keyframes laserMove {
+    0%, 100% { opacity: 0.3; transform: translateX(0) rotate(var(--rot, 25deg)); }
+    50% { opacity: 0.8; transform: translateX(30px) rotate(var(--rot, 25deg)); }
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); }
+    50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.7); }
+  }
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes bounce-soft {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .animate-fade-up { animation: fadeInUp 0.8s ease-out forwards; }
+  .animate-fade-in { animation: fadeIn 1s ease-out forwards; }
+  .animate-slide-right { animation: slideInRight 0.8s ease-out forwards; }
+  .animate-slide-left { animation: slideInLeft 0.8s ease-out forwards; }
+  .animate-float { animation: float 4s ease-in-out infinite; }
+  .animate-glow { animation: pulse-glow 2s ease-in-out infinite; }
+  .animate-spin-slow { animation: spin-slow 20s linear infinite; }
+  .animate-bounce-soft { animation: bounce-soft 2s ease-in-out infinite; }
+
+  .delay-100 { animation-delay: 0.1s; opacity: 0; }
+  .delay-200 { animation-delay: 0.2s; opacity: 0; }
+  .delay-300 { animation-delay: 0.3s; opacity: 0; }
+  .delay-400 { animation-delay: 0.4s; opacity: 0; }
+  .delay-500 { animation-delay: 0.5s; opacity: 0; }
+
+  /* Page transitions */
+  .page {
+    display: none;
+    animation: fadeInUp 0.6s ease-out;
+  }
+  .page.active { display: block; }
+
+  /* Button hover */
+  .btn-primary {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5);
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+  }
+  .btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.5);
+  }
+  .btn-outline {
+    background: white;
+    color: #059669;
+    border: 2px solid #10B981;
+    transition: all 0.3s ease;
+  }
+  .btn-outline:hover {
+    background: #10B981;
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  /* Nav link */
+  .nav-link {
+    position: relative;
+    padding: 8px 16px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    color: #374151;
+    cursor: pointer;
+  }
+  .nav-link:hover {
+    color: #059669;
+    background: #D1FAE5;
+  }
+  .nav-link.active {
+    color: white;
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  }
+
+  /* Card */
+  .card-modern {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    border: 1px solid #F3F4F6;
+    transition: all 0.3s ease;
+  }
+  .card-modern:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(16, 185, 129, 0.15);
+    border-color: #A7F3D0;
+  }
+
+  /* Quiz option */
+  .quiz-option {
+    background: white;
+    border: 2px solid #E5E7EB;
+    border-radius: 16px;
+    padding: 16px 20px;
+    text-align: left;
+    font-weight: 600;
+    color: #374151;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .quiz-option:hover:not(:disabled) {
+    border-color: #10B981;
+    background: #F0FDF4;
+    transform: translateX(4px);
+  }
+  .quiz-option.correct {
+    border-color: #10B981;
+    background: #D1FAE5;
+    color: #065F46;
+  }
+  .quiz-option.wrong {
+    border-color: #EF4444;
+    background: #FEE2E2;
+    color: #991B1B;
+  }
+  .quiz-option:disabled { cursor: not-allowed; }
+
+  /* Confetti */
+  .confetti {
+    position: fixed;
+    width: 10px; height: 10px;
+    top: -10px;
+    z-index: 9999;
+    pointer-events: none;
+    animation: confettiFall 3s linear forwards;
+  }
+  @keyframes confettiFall {
+    to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* Scroll to top */
+  #scrollTop {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  #scrollTop.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Hero bg pattern */
+  .hero-pattern {
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(245, 158, 11, 0.06) 0%, transparent 50%);
+  }
+
+  /* Mobile menu */
+  #mobileMenu { display: none; }
+  #mobileMenu.open { display: flex; }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #059669 0%, #10B981 50%, #F59E0B 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Arabic text box */
+  .arabic-box {
+    background: linear-gradient(135deg, #ECFDF5 0%, #FFFBEB 100%);
+    border: 2px solid #A7F3D0;
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .arabic-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(16, 185, 129, 0.1), transparent 40%),
+      radial-gradient(circle at 90% 90%, rgba(245, 158, 11, 0.1), transparent 40%);
+    pointer-events: none;
+  }
+
+  /* Checklist item */
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 20px;
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #E5E7EB;
+    transition: all 0.3s ease;
+  }
+  .check-item:hover {
+    border-color: #10B981;
+    background: #F0FDF4;
+    transform: translateX(6px);
+  }
+  .check-item .num {
+    flex-shrink: 0;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #10B981, #059669);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  /* Badge */
+  .badge-achievement {
+    background: linear-gradient(135deg, #FCD34D, #F59E0B);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 999px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+  }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full relative"><!-- Laser glow background -->
+  <div class="laser-glow laser-1"></div>
+  <div class="laser-glow laser-2"></div>
+  <div class="laser-glow laser-3"></div>
+  <div class="laser-glow laser-4"></div>
+  <div class="relative z-10 w-full"><!-- HEADER -->
+   <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-lg border-b border-green-100 shadow-sm"><!-- Top institution bar -->
+    <div class="w-full bg-gradient-to-r from-emerald-50 via-white to-amber-50 border-b border-emerald-100">
+     <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2 md:gap-3"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhKrfuU49wIAhZYKt06jMJ6vSIlXf1sXX9iY0GQvJLNJvx59xj7Uxu_7s8zzxBusFVveAOdwx2EnqGba3TF6TuKbeqLvSlM84vVkONV0O4-7YTMaf9BZDfB8dZ-HFO4sREQLqVaYc5UQ_pt0LFNT6cUHzvtIClVoDa66F6bIJoPxox-w4xDcR3zLt0KrOWH/s3724/LOGO%20UIN%20SUNAN%20KUDUS.jpg" alt="UIN Sunan Kudus" loading="lazy" class="w-10 h-10 md:w-12 md:h-12 object-contain" onerror="this.style.display='none'">
+       <div class="leading-tight">
+        <div class="text-[10px] md:text-xs text-gray-500 font-medium">
+         Universitas
+        </div>
+        <div class="text-xs md:text-sm font-bold text-emerald-700">
+         UIN SUNAN KUDUS
+        </div>
+       </div>
+      </div>
+      <div class="flex items-center gap-2 md:gap-3">
+       <div class="leading-tight text-right">
+        <div class="text-[10px] md:text-xs text-gray-500 font-medium">
+         Madrasah
+        </div>
+        <div class="text-xs md:text-sm font-bold text-emerald-700">
+         MI NURUL ILMI
+        </div>
+       </div><img src="https://tse2.mm.bing.net/th/id/OIP.V800Wvfl-PrG6jZrhcKrLgHaHF?pid=Api&amp;P=0&amp;h=180" alt="MI Nurul Ilmi" loading="lazy" class="w-10 h-10 md:w-12 md:h-12 object-contain rounded-full" onerror="this.style.display='none'">
+      </div>
+     </div>
+    </div><!-- Navigation -->
+    <nav class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+     <div class="flex items-center gap-2">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center shadow-lg animate-glow"><i data-lucide="heart" class="text-white" style="width:20px;height:20px;"></i>
+      </div>
+      <div class="font-fredoka font-bold text-lg gradient-text">
+       Birrul Walidain
+      </div>
+     </div>
+     <div class="hidden lg:flex items-center gap-1" id="navLinks"><button class="nav-link active" data-page="home">Home</button> <button class="nav-link" data-page="hadis">Hadis Utama</button> <button class="nav-link" data-page="cara">Cara Berbakti</button> <button class="nav-link" data-page="keutamaan">Keutamaan</button> <button class="nav-link" data-page="wafat">Orang Tua Wafat</button> <button class="nav-link" data-page="game">Game &amp; Kuis</button>
+     </div>
+     <div class="flex items-center gap-2"><button id="musicToggle" title="Musik Background" class="p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 transition"> <i data-lucide="volume-x" style="width:20px;height:20px;" id="musicIcon"></i> </button> <button id="menuToggle" class="lg:hidden p-2 rounded-xl bg-emerald-50 text-emerald-700"> <i data-lucide="menu" style="width:22px;height:22px;"></i> </button>
+     </div>
+    </nav><!-- Mobile menu -->
+    <div id="mobileMenu" class="lg:hidden flex-col gap-1 px-4 pb-4 border-t border-emerald-100"><button class="nav-link active text-left" data-page="home">Home</button> <button class="nav-link text-left" data-page="hadis">Hadis Utama</button> <button class="nav-link text-left" data-page="cara">Cara Berbakti</button> <button class="nav-link text-left" data-page="keutamaan">Keutamaan</button> <button class="nav-link text-left" data-page="wafat">Orang Tua Wafat</button> <button class="nav-link text-left" data-page="game">Game &amp; Kuis</button>
+    </div>
+   </header>
+   <main class="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12"><!-- ========== PAGE 1: HOME ========== -->
+    <section id="page-home" class="page active"><!-- Hero -->
+     <div class="hero-pattern rounded-3xl p-6 md:p-12 mb-10 relative overflow-hidden">
+      <div class="grid lg:grid-cols-2 gap-8 items-center relative z-10">
+       <div>
+        <div class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-100 rounded-full mb-5 animate-fade-up"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> <span class="text-sm font-semibold text-emerald-700">Media Pembelajaran Interaktif</span>
+        </div>
+        <h1 class="font-fredoka text-4xl md:text-6xl font-bold leading-tight mb-4 animate-fade-up delay-100"><span class="gradient-text">BIRRUL WALIDAIN</span></h1>
+        <p class="text-lg md:text-xl text-gray-600 font-medium mb-2 animate-fade-up delay-200">Media Pembelajaran Interaktif</p>
+        <p class="text-xl md:text-2xl font-fredoka text-amber-600 font-semibold mb-8 animate-fade-up delay-300">"Yuk Jadi Anak Hebat yang Sayang Orang Tua" 💚</p>
+        <div class="flex flex-wrap gap-3 animate-fade-up delay-400"><button onclick="goToPage('hadis')" class="btn-primary px-7 py-3.5 rounded-2xl font-bold flex items-center gap-2"> <i data-lucide="book-open" style="width:20px;height:20px;"></i> Mulai Belajar </button> <button onclick="goToPage('game')" class="btn-gold px-7 py-3.5 rounded-2xl font-bold flex items-center gap-2"> <i data-lucide="gamepad-2" style="width:20px;height:20px;"></i> Main Kuis </button>
+        </div>
+       </div><!-- Illustration -->
+       <div class="relative animate-fade-up delay-300">
+        <div class="relative w-full max-w-md mx-auto aspect-square"><!-- Background blob -->
+         <div class="absolute inset-0 bg-gradient-to-br from-emerald-200 via-emerald-100 to-amber-100 rounded-full blur-2xl opacity-60"></div>
+         <svg viewbox="0 0 400 400" class="relative w-full h-full animate-float"><!-- Sun --> <circle cx="340" cy="60" r="25" fill="#FCD34D" /> <g stroke="#FCD34D" stroke-width="3" stroke-linecap="round">
+           <line x1="340" y1="20" x2="340" y2="10" />
+           <line x1="380" y1="60" x2="390" y2="60" />
+           <line x1="310" y1="30" x2="303" y2="23" />
+           <line x1="370" y1="30" x2="377" y2="23" />
+          </g> <!-- Ground --> <ellipse cx="200" cy="360" rx="180" ry="20" fill="#D1FAE5" /> <!-- Tree --> <rect x="50" y="220" width="15" height="100" fill="#92400E" rx="3" /> <circle cx="57" cy="210" r="45" fill="#10B981" /> <circle cx="40" cy="195" r="25" fill="#34D399" /> <circle cx="80" cy="200" r="28" fill="#34D399" /> <!-- Parent 1 (Mom - hijab) --> <g><!-- Body -->
+           <path d="M 150 240 L 145 340 L 180 340 L 175 240 Z" fill="#059669" /> <!-- Head + hijab -->
+           <ellipse cx="162" cy="200" rx="28" ry="32" fill="#059669" />
+           <ellipse cx="162" cy="210" rx="20" ry="22" fill="#FDE68A" /> <!-- Eyes -->
+           <circle cx="156" cy="208" r="2" fill="#1F2937" />
+           <circle cx="168" cy="208" r="2" fill="#1F2937" /> <!-- Smile -->
+           <path d="M 156 218 Q 162 222 168 218" stroke="#1F2937" stroke-width="1.5" fill="none" stroke-linecap="round" /> <!-- Arm down to child -->
+           <path d="M 148 250 Q 130 275 135 300" stroke="#059669" stroke-width="14" fill="none" stroke-linecap="round" />
+          </g> <!-- Parent 2 (Dad) --> <g><!-- Body -->
+           <path d="M 225 245 L 220 345 L 260 345 L 255 245 Z" fill="#1E40AF" /> <!-- Head -->
+           <circle cx="237" cy="210" r="26" fill="#FCD5AE" /> <!-- Hair/cap -->
+           <path d="M 213 205 Q 237 180 261 205 L 261 195 Q 237 170 213 195 Z" fill="#FFFFFF" />
+           <ellipse cx="237" cy="192" rx="24" ry="12" fill="#FFFFFF" /> <!-- Eyes -->
+           <circle cx="230" cy="212" r="2" fill="#1F2937" />
+           <circle cx="244" cy="212" r="2" fill="#1F2937" /> <!-- Smile -->
+           <path d="M 230 222 Q 237 227 244 222" stroke="#1F2937" stroke-width="1.5" fill="none" stroke-linecap="round" /> <!-- Beard -->
+           <path d="M 220 220 Q 237 240 254 220" stroke="#78350F" stroke-width="2" fill="none" />
+          </g> <!-- Child 1 (boy) --> <g><!-- Body -->
+           <path d="M 115 290 L 112 345 L 140 345 L 137 290 Z" fill="#F59E0B" /> <!-- Head -->
+           <circle cx="126" cy="270" r="18" fill="#FCD5AE" /> <!-- Cap -->
+           <path d="M 112 268 Q 126 252 140 268 L 140 263 Q 126 250 112 263 Z" fill="#FFFFFF" /> <!-- Eyes -->
+           <circle cx="121" cy="272" r="1.5" fill="#1F2937" />
+           <circle cx="131" cy="272" r="1.5" fill="#1F2937" /> <!-- Smile -->
+           <path d="M 121 279 Q 126 283 131 279" stroke="#1F2937" stroke-width="1.2" fill="none" stroke-linecap="round" /> <!-- Arm holding mom -->
+           <path d="M 138 298 Q 145 295 148 295" stroke="#F59E0B" stroke-width="8" fill="none" stroke-linecap="round" /> <!-- Flower -->
+           <circle cx="110" cy="310" r="6" fill="#EF4444" />
+           <circle cx="107" cy="307" r="3" fill="#FCA5A5" />
+           <circle cx="113" cy="307" r="3" fill="#FCA5A5" />
+           <circle cx="110" cy="304" r="3" fill="#FCA5A5" />
+           <circle cx="110" cy="310" r="2.5" fill="#FCD34D" />
+          </g> <!-- Child 2 (girl with hijab) --> <g><!-- Body -->
+           <path d="M 275 295 L 272 345 L 300 345 L 297 295 Z" fill="#EC4899" /> <!-- Hijab head -->
+           <ellipse cx="286" cy="275" rx="20" ry="23" fill="#EC4899" />
+           <ellipse cx="286" cy="282" rx="14" ry="16" fill="#FDE68A" /> <!-- Eyes -->
+           <circle cx="281" cy="281" r="1.5" fill="#1F2937" />
+           <circle cx="291" cy="281" r="1.5" fill="#1F2937" /> <!-- Smile -->
+           <path d="M 281 287 Q 286 291 291 287" stroke="#1F2937" stroke-width="1.2" fill="none" stroke-linecap="round" /> <!-- Heart -->
+           <path d="M 310 310 L 305 305 Q 300 300 305 295 Q 310 290 315 295 Q 320 290 325 295 Q 330 300 325 305 Z" fill="#EF4444" />
+          </g> <!-- Hearts floating --> <g opacity="0.7">
+           <path d="M 200 100 L 195 95 Q 190 90 195 85 Q 200 80 205 85 Q 210 80 215 85 Q 220 90 215 95 Z" fill="#EF4444" />
+           <path d="M 100 130 L 97 127 Q 94 124 97 121 Q 100 118 103 121 Q 106 118 109 121 Q 112 124 109 127 Z" fill="#F472B6" />
+           <path d="M 320 150 L 317 147 Q 314 144 317 141 Q 320 138 323 141 Q 326 138 329 141 Q 332 144 329 147 Z" fill="#EF4444" />
+          </g> <!-- Sparkles --> <g fill="#FCD34D">
+           <path d="M 60 100 L 62 105 L 67 107 L 62 109 L 60 114 L 58 109 L 53 107 L 58 105 Z" />
+           <path d="M 350 250 L 352 254 L 356 256 L 352 258 L 350 262 L 348 258 L 344 256 L 348 254 Z" />
+          </g>
+         </svg>
+        </div>
+       </div>
+      </div>
+     </div><!-- What is Birrul Walidain -->
+     <div class="grid lg:grid-cols-2 gap-6 mb-10">
+      <div class="card-modern p-8 animate-fade-up">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center"><i data-lucide="help-circle" class="text-white" style="width:24px;height:24px;"></i>
+        </div>
+        <h2 class="font-fredoka text-2xl md:text-3xl font-bold text-gray-800">Apa Itu Birrul Walidain?</h2>
+       </div>
+       <div class="space-y-3 text-gray-700 leading-relaxed">
+        <p class="flex gap-3"><span class="text-emerald-500 font-bold">✦</span> <span><b>Birrul Walidain</b> berarti <b class="text-emerald-700">berbakti kepada kedua orang tua</b>.</span></p>
+        <p class="flex gap-3"><span class="text-emerald-500 font-bold">✦</span> <span>Berbakti dan menaati orang tua hukumnya <b class="text-emerald-700">wajib</b> bagi setiap anak muslim.</span></p>
+        <p class="flex gap-3"><span class="text-emerald-500 font-bold">✦</span> <span>Kita tidak boleh sedikit pun <b class="text-red-500">menyakiti hati</b> mereka.</span></p>
+       </div>
+      </div>
+      <div class="card-modern p-8 animate-fade-up delay-200">
+       <div class="flex items-center gap-3 mb-4">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center"><i data-lucide="sparkles" class="text-white" style="width:24px;height:24px;"></i>
+        </div>
+        <h2 class="font-fredoka text-2xl md:text-3xl font-bold text-gray-800">Yuk, Jadi Anak Hebat!</h2>
+       </div>
+       <p class="text-gray-700 leading-relaxed mb-4">Anak hebat adalah anak yang selalu <b class="text-emerald-700">sayang</b>, <b class="text-emerald-700">patuh</b>, dan <b class="text-emerald-700">berbakti</b> kepada ayah dan ibunya. Dengan berbakti kepada mereka, Allah SWT akan memberikan kebahagiaan dunia dan akhirat. ✨</p>
+       <div class="flex flex-wrap gap-2"><span class="px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-sm font-semibold">💚 Sayang</span> <span class="px-3 py-1.5 rounded-full bg-amber-50 text-amber-700 text-sm font-semibold">🌟 Patuh</span> <span class="px-3 py-1.5 rounded-full bg-pink-50 text-pink-700 text-sm font-semibold">🤲 Berbakti</span>
+       </div>
+      </div>
+     </div><!-- Features -->
+     <div class="grid md:grid-cols-3 gap-5 mb-10">
+      <div class="card-modern p-6 text-center animate-fade-up">
+       <div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-100 flex items-center justify-center mb-3"><i data-lucide="book-marked" class="text-emerald-600" style="width:28px;height:28px;"></i>
+       </div>
+       <h3 class="font-fredoka font-bold text-lg mb-1">Hadis Lengkap</h3>
+       <p class="text-gray-600 text-sm">Pelajari hadis utama birrul walidain</p>
+      </div>
+      <div class="card-modern p-6 text-center animate-fade-up delay-100">
+       <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-100 flex items-center justify-center mb-3"><i data-lucide="list-checks" class="text-amber-600" style="width:28px;height:28px;"></i>
+       </div>
+       <h3 class="font-fredoka font-bold text-lg mb-1">Cara Praktis</h3>
+       <p class="text-gray-600 text-sm">Tips berbakti yang mudah dilakukan</p>
+      </div>
+      <div class="card-modern p-6 text-center animate-fade-up delay-200">
+       <div class="w-14 h-14 mx-auto rounded-2xl bg-pink-100 flex items-center justify-center mb-3"><i data-lucide="gamepad-2" class="text-pink-600" style="width:28px;height:28px;"></i>
+       </div>
+       <h3 class="font-fredoka font-bold text-lg mb-1">Game Seru</h3>
+       <p class="text-gray-600 text-sm">Belajar sambil main kuis</p>
+      </div>
+     </div>
+     <div class="flex justify-end"><button onclick="goToPage('hadis')" class="btn-primary px-6 py-3 rounded-2xl font-bold flex items-center gap-2"> Selanjutnya <i data-lucide="arrow-right" style="width:18px;height:18px;"></i> </button>
+     </div>
+    </section><!-- ========== PAGE 2: HADIS ========== -->
+    <section id="page-hadis" class="page">
+     <div class="text-center mb-8 animate-fade-up">
+      <div class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-100 rounded-full mb-4"><i data-lucide="book-open" style="width:16px;height:16px;" class="text-emerald-700"></i> <span class="text-sm font-semibold text-emerald-700">Halaman 2 - Hadis</span>
+      </div>
+      <h1 class="font-fredoka text-3xl md:text-5xl font-bold gradient-text mb-3">Hafalan Hadis Birrul Walidain</h1>
+      <p class="text-lg text-gray-600">Hadis Penting Untuk Dihafal 📖</p>
+     </div><!-- Hadis card -->
+     <div class="arabic-box p-6 md:p-10 mb-8 animate-fade-up delay-100"><!-- Calligraphy frame decoration -->
+      <div class="relative"><!-- Corner ornaments -->
+       <svg class="absolute -top-2 -left-2 w-10 h-10 text-emerald-600" viewbox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 20 Q5 5 20 5" stroke-linecap="round" /> <circle cx="10" cy="10" r="2" fill="currentColor" />
+       </svg>
+       <svg class="absolute -top-2 -right-2 w-10 h-10 text-emerald-600" viewbox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2"><path d="M35 20 Q35 5 20 5" stroke-linecap="round" /> <circle cx="30" cy="10" r="2" fill="currentColor" />
+       </svg>
+       <svg class="absolute -bottom-2 -left-2 w-10 h-10 text-emerald-600" viewbox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 20 Q5 35 20 35" stroke-linecap="round" /> <circle cx="10" cy="30" r="2" fill="currentColor" />
+       </svg>
+       <svg class="absolute -bottom-2 -right-2 w-10 h-10 text-emerald-600" viewbox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2"><path d="M35 20 Q35 35 20 35" stroke-linecap="round" /> <circle cx="30" cy="30" r="2" fill="currentColor" />
+       </svg>
+       <div class="relative">
+        <div class="flex items-center justify-center gap-2 mb-6">
+         <div class="h-px w-12 bg-emerald-400"></div><span class="text-emerald-700 font-bold text-sm tracking-wider">LAFAL HADIS</span>
+         <div class="h-px w-12 bg-emerald-400"></div>
+        </div>
+        <p class="font-arabic text-2xl md:text-4xl text-right leading-[2.2] text-gray-800 mb-8" dir="rtl">عَنْ عَبْدِ اللَّهِ ابْنِ عَمْرٍو عَنِ النَّبِيِّ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ قَالَ : رِضَى الرَّبِّ فِي رِضَى الْوَالِدِ وَسَخَطُ الرَّبِّ فِي سَخَطِ الْوَالِدِ</p>
+        <div class="flex items-center justify-center gap-2 mb-4">
+         <div class="h-px w-12 bg-amber-400"></div><span class="text-amber-700 font-bold text-sm tracking-wider">ARTINYA</span>
+         <div class="h-px w-12 bg-amber-400"></div>
+        </div>
+        <p class="text-center text-base md:text-lg text-gray-700 italic leading-relaxed max-w-3xl mx-auto">"Keridaan Allah bergantung pada keridaan orang tua dan kemurkaan Allah bergantung pada kemurkaan orang tua."</p>
+        <p class="text-center text-emerald-700 font-bold mt-3">(HR. Tirmidzi)</p>
+       </div>
+      </div>
+     </div><!-- Tips hafalan -->
+     <div class="card-modern p-6 md:p-8 mb-8 animate-fade-up delay-200 bg-gradient-to-br from-amber-50 to-white border-amber-200">
+      <div class="flex items-center gap-3 mb-4">
+       <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center"><i data-lucide="lightbulb" class="text-white" style="width:24px;height:24px;"></i>
+       </div>
+       <h3 class="font-fredoka text-2xl font-bold text-gray-800">Tips Hafalan</h3>
+      </div>
+      <div class="grid md:grid-cols-3 gap-4 mt-4">
+       <div class="bg-white p-4 rounded-xl border border-amber-100">
+        <div class="text-3xl mb-2">
+         👯
+        </div>
+        <p class="font-semibold text-gray-800">Ulangi Bersama</p>
+        <p class="text-sm text-gray-600">Baca bersama teman sebangku</p>
+       </div>
+       <div class="bg-white p-4 rounded-xl border border-amber-100">
+        <div class="text-3xl mb-2">
+         🔁
+        </div>
+        <p class="font-semibold text-gray-800">Hafal Sedikit</p>
+        <p class="text-sm text-gray-600">Cicil sepotong demi sepotong</p>
+       </div>
+       <div class="bg-white p-4 rounded-xl border border-amber-100">
+        <div class="text-3xl mb-2">
+         🌙
+        </div>
+        <p class="font-semibold text-gray-800">Amalkan</p>
+        <p class="text-sm text-gray-600">Praktikkan kepada orang tua</p>
+       </div>
+      </div>
+     </div>
+     <div class="flex justify-between"><button onclick="goToPage('home')" class="btn-outline px-6 py-3 rounded-2xl font-bold flex items-center gap-2"> <i data-lucide="arrow-left" style="width:18px;height:18px;"></i> Sebelumnya </button> <button onclick="goToPage('cara')" class="btn-primary px-6 py-3 rounded-2xl font-bold flex items-center gap-2"> Selanjutnya <i data-lucide="arrow-right" style="width:18px;height:18px;"></i> </button>
+     </div>
+    </section><!-- ========== PAGE 3: CARA BERBAKTI ========== -->
+    <section id="page-cara" class="page">
+     <div class="text-center mb-8 animate-fade-up">
+      <div class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-100 rounded-full mb-4"><i data-lucide="heart" style="width:16px;height:16px;" class="text-emerald-700"></i> <span class="text-sm font-semibold text-emerald-700">Halaman 3 - Cara Berbakti</span>
+      </div>
+      <h1 class="font-fredoka text-3xl md:text-5xl font-bold gradient-text mb-3">Rahasia Menjadi Anak Kesayangan</h1>
+      <p class="text-lg text-gray-600">Ayah &amp; Ibu 💖</p>
+     </div>
+     <div class="grid lg:grid-cols-2 gap-6 mb-8"><!-- List -->
+      <div class="space-y-3 animate-slide-left">
+       <div class="check-item">
+        <div class="num">
+         1
+        </div>
+        <div>
+         <p class="font-bold text-gray-800">Berbicara Lembut 🗣️</p>
+         <p class="text-sm text-gray-600">Gunakan suara yang halus dan sopan</p>
+        </div>
+       </div>
+       <div class="check-item">
+        <div class="num">
+         2
+        </div>
+        <div>
+         <p class="font-bold text-gray-800">Tidak Membentak 🤫</p>
+         <p class="text-sm text-gray-600">Jangan meninggikan suara kepada mereka</p>
+        </div>
+       </div>
+       <div class="check-item">
+        <div class="num">
+         3
+        </div>
+        <div>
+         <p class="font-bold text-gray-800">Jangan Berkata "Ah" 😇</p>
+         <p class="text-sm text-gray-600">Hindari keluhan sekecil apapun</p>
+        </div>
+       </div>
+       <div class="check-item">
+        <div class="num">
+         4
+        </div>
+        <div>
+         <p class="font-bold text-gray-800">Menjaga Pandangan Sopan 👀</p>
+         <p class="text-sm text-gray-600">Tidak menatap dengan marah</p>
+        </div>
+       </div>
+       <div class="check-item">
+        <div class="num">
+         5
+        </div>
+        <div>
+         <p class="font-bold text-gray-800">Menjaga Nama Baik Orang Tua ⭐</p>
+         <p class="text-sm text-gray-600">Berperilaku baik agar mereka bangga</p>
+        </div>
+       </div>
+       <div class="check-item">
+        <div class="num">
+         6
+        </div>
+        <div>
+         <p class="font-bold text-gray-800">Meminta Rida dan Restu 🤲</p>
+         <p class="text-sm text-gray-600">Selalu minta doa sebelum beraktivitas</p>
+        </div>
+       </div>
+      </div><!-- Do & Don't Illustration -->
+      <div class="space-y-4 animate-slide-right">
+       <div class="card-modern p-6 bg-gradient-to-br from-emerald-50 to-white border-emerald-200">
+        <div class="flex items-center gap-2 mb-4">
+         <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center"><i data-lucide="check" class="text-white" style="width:20px;height:20px;"></i>
+         </div>
+         <h3 class="font-fredoka text-xl font-bold text-emerald-700">BOLEH ✅</h3>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+         <div class="bg-white p-3 rounded-xl text-center border border-emerald-100">
+          <div class="text-3xl mb-1">
+           🤗
+          </div>
+          <p class="text-xs font-semibold">Memeluk</p>
+         </div>
+         <div class="bg-white p-3 rounded-xl text-center border border-emerald-100">
+          <div class="text-3xl mb-1">
+           😊
+          </div>
+          <p class="text-xs font-semibold">Tersenyum</p>
+         </div>
+         <div class="bg-white p-3 rounded-xl text-center border border-emerald-100">
+          <div class="text-3xl mb-1">
+           🧹
+          </div>
+          <p class="text-xs font-semibold">Membantu</p>
+         </div>
+         <div class="bg-white p-3 rounded-xl text-center border border-emerald-100">
+          <div class="text-3xl mb-1">
+           🙏
+          </div>
+          <p class="text-xs font-semibold">Mendoakan</p>
+         </div>
+        </div>
+       </div>
+       <div class="card-modern p-6 bg-gradient-to-br from-red-50 to-white border-red-200">
+        <div class="flex items-center gap-2 mb-4">
+         <div class="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center"><i data-lucide="x" class="text-white" style="width:20px;height:20px;"></i>
+         </div>
+         <h3 class="font-fredoka text-xl font-bold text-red-600">JANGAN ❌</h3>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+         <div class="bg-white p-3 rounded-xl text-center border border-red-100">
+          <div class="text-3xl mb-1">
+           😠
+          </div>
+          <p class="text-xs font-semibold">Membentak</p>
+         </div>
+         <div class="bg-white p-3 rounded-xl text-center border border-red-100">
+          <div class="text-3xl mb-1">
+           😤
+          </div>
+          <p class="text-xs font-semibold">Berkata "Ah"</p>
+         </div>
+         <div class="bg-white p-3 rounded-xl text-center border border-red-100">
+          <div class="text-3xl mb-1">
+           🙄
+          </div>
+          <p class="text-xs font-semibold">Cuek</p>
+         </div>
+         <div class="bg-white p-3 rounded-xl text-center border border-red-100">
+          <div class="text-3xl mb-1">
+           😢
+          </div>
+          <p class="text-xs font-semibold">Menyakiti</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="flex justify-between"><button onclick="goToPage('hadis')" class="btn-outline px-6 py-3 rounded-2xl font-bold flex items-center gap-2"> <i data-lucide="arrow-left" style="width:18px;height:18px;"></i> Sebelumnya </button> <button onclick="goToPage('keutamaan')" class="btn-primary px-6 py-3 rounded-2xl font-bold flex items-center gap-2"> Selanjutnya <i data-lucide="arrow-right" style="width:18px;height:18px;"></i> </button>
+     </div>
+    </section><!-- ========== PAGE 4: KEUTAMAAN ========== -->
+    <section id="page-keutamaan" class="page">
+     <div class="text-center mb-8 animate-fade-up">
+      <div class="inline-flex items-center gap-2 px-4 py-2 bg-amber-100 rounded-full mb-4"><i data-lucide="star" style="width:16px;height:16px;" class="text-amber-700"></i> <span class="text-sm font-semibold text-amber-700">Halaman 4 - Keutamaan</span>
+      </div>
+      <h1 class="font-fredoka text-3xl md:text-5xl font-bold gradient-text mb-3">Kenapa Kita Harus Berbakti?</h1>
+      <p class="text-lg text-gray-600">Ini dia keutamaannya ✨</p>
+     </div><!-- Heaven gate illustration -->
+     <div class="relative rounded-3xl overflow-hidden mb-8 bg-gradient-to-b from-sky-100 via-amber-50 to-emerald-50 p-8 animate-fade-up delay-100">
+      <svg viewbox="0 0 800 300" class="w-full h-auto max-h-80 mx-auto"><!-- Sky stars --> <g fill="#FCD34D" class="animate-pulse">
+        <path d="M 100 50 L 103 58 L 111 60 L 103 62 L 100 70 L 97 62 L 89 60 L 97 58 Z" />
+        <path d="M 700 40 L 703 48 L 711 50 L 703 52 L 700 60 L 697 52 L 689 50 L 697 48 Z" />
+        <path d="M 200 80 L 202 85 L 207 86 L 202 87 L 200 92 L 198 87 L 193 86 L 198 85 Z" />
+        <path d="M 600 90 L 602 95 L 607 96 L 602 97 L 600 102 L 598 97 L 593 96 L 598 95 Z" />
+       </g> <!-- Light rays from center --> <g opacity="0.3">
+        <path d="M 400 250 L 300 0 L 350 0 Z" fill="#FCD34D" />
+        <path d="M 400 250 L 450 0 L 500 0 Z" fill="#FCD34D" />
+        <path d="M 400 250 L 200 50 L 250 30 Z" fill="#FCD34D" />
+        <path d="M 400 250 L 550 30 L 600 50 Z" fill="#FCD34D" />
+       </g> <!-- Ground --> <rect x="0" y="250" width="800" height="50" fill="#10B981" /> <!-- Gate pillars --> <rect x="300" y="100" width="30" height="150" fill="#F59E0B" /> <rect x="470" y="100" width="30" height="150" fill="#F59E0B" /> <!-- Gate arch --> <path d="M 300 110 Q 400 30 500 110" stroke="#F59E0B" stroke-width="25" fill="none" /> <!-- Gate decorations --> <circle cx="315" cy="105" r="8" fill="#FCD34D" /> <circle cx="485" cy="105" r="8" fill="#FCD34D" /> <circle cx="400" cy="60" r="12" fill="#FCD34D" /> <!-- Door --> <rect x="330" y="130" width="140" height="120" fill="#FCD34D" opacity="0.6" /> <rect x="335" y="135" width="60" height="115" fill="#FFFFFF" opacity="0.4" /> <rect x="405" y="135" width="60" height="115" fill="#FFFFFF" opacity="0.4" /> <!-- Clouds --> <ellipse cx="150" cy="150" rx="50" ry="20" fill="#FFFFFF" opacity="0.8" /> <ellipse cx="650" cy="150" rx="50" ry="20" fill="#FFFFFF" opacity="0.8" /> <!-- Text --> <text x="400" y="190" text-anchor="middle" font-family="Fredoka, sans-serif" font-size="22" font-weight="700" fill="#92400E">
+        JANNAH
+       </text>
+      </svg>
+     </div>
+     <div class="grid md:grid-cols-2 gap-5 mb-8">
+      <div class="card-modern p-6 animate-fade-up delay-100 bg-gradient-to-br from-emerald-50 to-white">
+       <div class="flex items-start gap-4">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center flex-shrink-0 text-2xl">
+         🏡
+        </div>
+        <div>
+         <h3 class="font-fredoka text-xl font-bold text-gray-800 mb-2">Jalan Menuju Surga</h3>
+         <p class="text-gray-600">Berbakti kepada orang tua adalah salah satu jalan yang membawa kita ke surga Allah SWT.</p>
+        </div>
+       </div>
+      </div>
+      <div class="card-modern p-6 animate-fade-up delay-200 bg-gradient-to-br from-amber-50 to-white">
+       <div class="flex items-start gap-4">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center flex-shrink-0 text-2xl">
+         ✨
+        </div>
+        <div>
+         <h3 class="font-fredoka text-xl font-bold text-gray-800 mb-2">Menghilangkan Kesulitan</h3>
+         <p class="text-gray-600">Allah akan memudahkan setiap kesulitan bagi anak yang berbakti pada orang tuanya.</p>
+        </div>
+       </div>
+      </div>
+      <div class="card-modern p-6 animate-fade-up delay-300 bg-gradient-to-br from-pink-50 to-white">
+       <div class="flex items-start gap-4">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center flex-shrink-0 text-2xl">
+         💰
+        </div>
+        <div>
+         <h3 class="font-fredoka text-xl font-bold text-gray-800 mb-2">Rezeki Diluaskan</h3>
+         <p class="text-gray-600">Doa orang tua yang rida akan membuka pintu-pintu rezeki yang berkah.</p>
+        </div>
+       </div>
+      </div>
+      <div class="card-modern p-6 animate-fade-up delay-400 bg-gradient-to-br from-sky-50 to-white">
+       <div class="flex items-start gap-4">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center flex-shrink-0 text-2xl">
+         ⭐
+        </div>
+        <div>
+         <h3 class="font-fredoka text-xl font-bold text-gray-800 mb-2">Amal Paling Utama</h3>
+         <p class="text-gray-600">Birrul walidain termasuk amal ibadah yang paling dicintai Allah SWT.</p>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="flex justify-between"><button onclick="goToPage('cara')" class="btn-outline px-6 py-3 rounded-2xl font-bold flex items-center gap-2"> <i data-lucide="arrow-left" style="width:18px;height:18px;"></i> Sebelumnya </button> <button onclick="goToPage('wafat')" class="btn-primary px-6 py-3 rounded-2xl font-bold flex items-center gap-2"> Selanjutnya <i data-lucide="arrow-right" style="width:18px;height:18px;"></i> </button>
+     </div>
+    </section><!-- ========== PAGE 5: ORANG TUA WAFAT ========== -->
+    <section id="page-wafat" class="page">
+     <div class="text-center mb-8 animate-fade-up">
+      <div class="inline-flex items-center gap-2 px-4 py-2 bg-sky-100 rounded-full mb-4"><i data-lucide="cloud" style="width:16px;height:16px;" class="text-sky-700"></i> <span class="text-sm font-semibold text-sky-700">Halaman 5 - Orang Tua Wafat</span>
+      </div>
+      <h1 class="font-fredoka text-3xl md:text-5xl font-bold gradient-text mb-3">Berbakti Walau Orang Tua Sudah Meninggal</h1>
+      <p class="text-lg text-gray-600">Cinta tak pernah berakhir 🕊️</p>
+     </div><!-- Prayer illustration -->
+     <div class="relative rounded-3xl overflow-hidden mb-8 bg-gradient-to-b from-sky-200 via-sky-100 to-white p-6 animate-fade-up delay-100">
+      <svg viewbox="0 0 800 280" class="w-full h-auto max-h-72 mx-auto"><!-- Clouds --> <ellipse cx="100" cy="60" rx="50" ry="18" fill="#FFFFFF" opacity="0.9" /> <ellipse cx="130" cy="55" rx="35" ry="15" fill="#FFFFFF" opacity="0.9" /> <ellipse cx="650" cy="70" rx="55" ry="20" fill="#FFFFFF" opacity="0.9" /> <ellipse cx="620" cy="65" rx="40" ry="16" fill="#FFFFFF" opacity="0.9" /> <!-- Birds --> <path d="M 200 80 Q 210 75 220 80 Q 230 75 240 80" stroke="#6B7280" stroke-width="2" fill="none" stroke-linecap="round" /> <path d="M 500 60 Q 510 55 520 60 Q 530 55 540 60" stroke="#6B7280" stroke-width="2" fill="none" stroke-linecap="round" /> <!-- Ground with grass --> <rect x="0" y="230" width="800" height="50" fill="#10B981" /> <path d="M 0 230 Q 50 220 100 230 T 200 230 T 300 230 T 400 230 T 500 230 T 600 230 T 700 230 T 800 230" fill="#059669" /> <!-- Child praying --> <g><!-- Mat -->
+        <rect x="340" y="215" width="120" height="18" fill="#7C3AED" rx="3" />
+        <rect x="340" y="215" width="120" height="5" fill="#A78BFA" rx="2" /> <!-- Body kneeling -->
+        <path d="M 380 180 L 370 220 L 430 220 L 420 180 Z" fill="#10B981" /> <!-- Arms raised in dua -->
+        <path d="M 385 185 Q 380 160 385 140" stroke="#FCD5AE" stroke-width="14" fill="none" stroke-linecap="round" />
+        <path d="M 415 185 Q 420 160 415 140" stroke="#FCD5AE" stroke-width="14" fill="none" stroke-linecap="round" /> <!-- Hands together -->
+        <ellipse cx="400" cy="135" rx="20" ry="10" fill="#FCD5AE" /> <!-- Head -->
+        <circle cx="400" cy="175" r="22" fill="#FCD5AE" /> <!-- Cap/peci -->
+        <path d="M 378 170 Q 400 150 422 170 L 422 162 Q 400 145 378 162 Z" fill="#FFFFFF" />
+        <ellipse cx="400" cy="160" rx="22" ry="8" fill="#FFFFFF" /> <!-- Closed peaceful eyes -->
+        <path d="M 391 177 Q 394 179 397 177" stroke="#1F2937" stroke-width="1.5" fill="none" stroke-linecap="round" />
+        <path d="M 403 177 Q 406 179 409 177" stroke="#1F2937" stroke-width="1.5" fill="none" stroke-linecap="round" /> <!-- Gentle smile -->
+        <path d="M 394 188 Q 400 191 406 188" stroke="#1F2937" stroke-width="1.5" fill="none" stroke-linecap="round" />
+       </g> <!-- Light from above --> <path d="M 400 0 L 350 140 L 450 140 Z" fill="#FCD34D" opacity="0.25" /> <!-- Hearts rising --> <g opacity="0.7">
+        <path d="M 350 110 L 347 107 Q 344 104 347 101 Q 350 98 353 101 Q 356 98 359 101 Q 362 104 359 107 Z" fill="#EF4444" />
+        <path d="M 450 90 L 447 87 Q 444 84 447 81 Q 450 78 453 81 Q 456 78 459 81 Q 462 84 459 87 Z" fill="#F472B6" />
+        <path d="M 420 50 L 418 48 Q 416 46 418 44 Q 420 42 422 44 Q 424 42 426 44 Q 428 46 426 48 Z" fill="#EF4444" />
+       </g> <!-- Stars --> <g fill="#FCD34D">
+        <path d="M 70 120 L 72 124 L 76 125 L 72 126 L 70 130 L 68 126 L 64 125 L 68 124 Z" />
+        <path d="M 730 130 L 732 134 L 736 135 L 732 136 L 730 140 L 728 136 L 724 135 L 728 134 Z" />
+       </g>
+      </svg>
+     </div>
+     <div class="grid md:grid-cols-2 gap-5 mb-8">
+      <div class="card-modern p-6 animate-fade-up delay-100">
+       <div class="flex items-start gap-4">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center flex-shrink-0 text-2xl">
+         🤲
+        </div>
+        <div>
+         <h3 class="font-fredoka text-xl font-bold text-gray-800 mb-1">Mendoakan Keduanya</h3>
+         <p class="text-gray-600 text-sm">Doakan ayah dan ibu agar diampuni dan masuk surga Allah.</p>
+        </div>
+       </div>
+      </div>
+      <div class="card-modern p-6 animate-fade-up delay-200">
+       <div class="flex items-start gap-4">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center flex-shrink-0 text-2xl">
+         🕊️
+        </div>
+        <div>
+         <h3 class="font-fredoka text-xl font-bold text-gray-800 mb-1">Memintakan Ampun</h3>
+         <p class="text-gray-600 text-sm">Mohonkan ampunan kepada Allah atas segala dosa mereka.</p>
+        </div>
+       </div>
+      </div>
+      <div class="card-modern p-6 animate-fade-up delay-300">
+       <div class="flex items-start gap-4">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center flex-shrink-0 text-2xl">
+         🤝
+        </div>
+        <div>
+         <h3 class="font-fredoka text-xl font-bold text-gray-800 mb-1">Menjalin Silaturahmi</h3>
+         <p class="text-gray-600 text-sm">Jaga hubungan baik dengan keluarga dan teman-teman mereka.</p>
+        </div>
+       </div>
+      </div>
+      <div class="card-modern p-6 animate-fade-up delay-400">
+       <div class="flex items-start gap-4">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center flex-shrink-0 text-2xl">
+         💝
+        </div>
+        <div>
+         <h3 class="font-fredoka text-xl font-bold text-gray-800 mb-1">Bersedekah Atas Nama Mereka</h3>
+         <p class="text-gray-600 text-sm">Sedekah yang pahalanya mengalir untuk ayah dan ibu.</p>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="flex justify-between"><button onclick="goToPage('keutamaan')" class="btn-outline px-6 py-3 rounded-2xl font-bold flex items-center gap-2"> <i data-lucide="arrow-left" style="width:18px;height:18px;"></i> Sebelumnya </button> <button onclick="goToPage('game')" class="btn-primary px-6 py-3 rounded-2xl font-bold flex items-center gap-2"> Selanjutnya <i data-lucide="arrow-right" style="width:18px;height:18px;"></i> </button>
+     </div>
+    </section><!-- ========== PAGE 6: GAME ========== -->
+    <section id="page-game" class="page">
+     <div class="text-center mb-8 animate-fade-up">
+      <div class="inline-flex items-center gap-2 px-4 py-2 bg-amber-100 rounded-full mb-4"><i data-lucide="gamepad-2" style="width:16px;height:16px;" class="text-amber-700"></i> <span class="text-sm font-semibold text-amber-700">Halaman 6 - Game &amp; Kuis</span>
+      </div>
+      <h1 class="font-fredoka text-3xl md:text-5xl font-bold gradient-text mb-3">Misi Detektif Birrul Walidain</h1>
+      <p class="text-lg text-gray-600">🕵️ Cerdas Cermat Seru! 🎯</p>
+     </div><!-- Quiz -->
+     <div class="card-modern p-6 md:p-8 mb-8 animate-fade-up delay-100">
+      <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
+       <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center"><i data-lucide="brain" class="text-white" style="width:24px;height:24px;"></i>
+        </div>
+        <div>
+         <h3 class="font-fredoka text-2xl font-bold text-gray-800">Cerdas Cermat</h3>
+         <p class="text-sm text-gray-500" id="progressText">Soal 1 dari 3</p>
+        </div>
+       </div>
+       <div class="px-5 py-2.5 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full text-white font-bold flex items-center gap-2"><i data-lucide="star" style="width:18px;height:18px;"></i> <span>Skor: <span id="score">0</span></span>
+       </div>
+      </div><!-- Progress bar -->
+      <div class="w-full bg-gray-200 rounded-full h-2 mb-6">
+       <div id="progressBar" class="bg-gradient-to-r from-emerald-500 to-emerald-600 h-2 rounded-full transition-all duration-500" style="width: 33%"></div>
+      </div>
+      <div id="quizArea">
+       <h4 class="font-fredoka text-xl md:text-2xl font-bold text-gray-800 mb-6" id="questionText"></h4>
+       <div class="space-y-3" id="optionsArea"></div>
+      </div><!-- Result area (hidden initially) -->
+      <div id="resultArea" class="hidden text-center py-6">
+       <div class="text-6xl mb-4" id="resultEmoji">
+        🏆
+       </div>
+       <h3 class="font-fredoka text-3xl font-bold gradient-text mb-2" id="resultTitle">Selamat!</h3>
+       <p class="text-lg text-gray-600 mb-2">Skor akhir kamu:</p>
+       <div class="text-5xl font-bold text-emerald-600 mb-4" id="finalScore">
+        0 / 3
+       </div>
+       <p class="text-gray-600 mb-6" id="resultMessage"></p><button onclick="resetQuiz()" class="btn-primary px-6 py-3 rounded-2xl font-bold inline-flex items-center gap-2"> <i data-lucide="refresh-cw" style="width:18px;height:18px;"></i> Main Lagi </button>
+      </div>
+     </div><!-- Mission Senyum Surga -->
+     <div class="card-modern p-6 md:p-8 mb-8 animate-fade-up delay-200 bg-gradient-to-br from-amber-50 via-white to-emerald-50 border-amber-200">
+      <div class="flex items-start gap-4 mb-4">
+       <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center flex-shrink-0 text-3xl animate-bounce-soft">
+        😇
+       </div>
+       <div>
+        <div class="flex items-center gap-2 mb-1 flex-wrap">
+         <h3 class="font-fredoka text-2xl font-bold text-gray-800">Mission: Senyum Surga</h3><span class="badge-achievement text-xs"> <i data-lucide="award" style="width:14px;height:14px;"></i> Special Mission </span>
+        </div>
+        <p class="text-gray-600">Tantangan untuk anak hebat sepertimu! 🌟</p>
+       </div>
+      </div>
+      <div class="bg-white rounded-2xl p-5 border-2 border-dashed border-amber-300 mb-4">
+       <p class="text-gray-700 text-lg leading-relaxed">📝 <b>Hari ini bantu orang tua diam-diam sampai mereka tersenyum!</b> Lakukan kebaikan kecil tanpa diminta, seperti merapikan sepatu, mencuci piring, atau memijat pundak ayah/ibu. 💚</p>
+      </div><button id="missionBtn" onclick="completeMission()" class="btn-gold px-6 py-3 rounded-2xl font-bold flex items-center gap-2 w-full md:w-auto justify-center"> <i data-lucide="check-circle" style="width:18px;height:18px;"></i> <span id="missionBtnText">Saya Terima Misi!</span> </button>
+      <div id="missionBadge" class="hidden mt-4 p-4 bg-gradient-to-r from-emerald-100 to-amber-100 rounded-2xl border-2 border-emerald-300 text-center">
+       <div class="text-4xl mb-2">
+        🏆
+       </div>
+       <p class="font-fredoka text-xl font-bold text-emerald-700">Badge Achievement Unlocked!</p>
+       <p class="text-gray-700 mt-1">Anak Hebat Pembawa Senyum 💚✨</p>
+      </div>
+     </div>
+     <div class="flex justify-between"><button onclick="goToPage('wafat')" class="btn-outline px-6 py-3 rounded-2xl font-bold flex items-center gap-2"> <i data-lucide="arrow-left" style="width:18px;height:18px;"></i> Sebelumnya </button> <button onclick="goToPage('home')" class="btn-primary px-6 py-3 rounded-2xl font-bold flex items-center gap-2"> <i data-lucide="home" style="width:18px;height:18px;"></i> Ke Home </button>
+     </div>
+    </section>
+   </main><!-- FOOTER -->
+   <footer class="relative mt-16 bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-800 text-white overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+     <div class="absolute top-10 left-10 w-40 h-40 rounded-full bg-white blur-3xl"></div>
+     <div class="absolute bottom-10 right-10 w-60 h-60 rounded-full bg-amber-300 blur-3xl"></div>
+    </div>
+    <div class="relative max-w-7xl mx-auto px-4 py-10">
+     <div class="grid md:grid-cols-3 gap-8 mb-8">
+      <div>
+       <div class="flex items-center gap-2 mb-3">
+        <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center"><i data-lucide="heart" style="width:20px;height:20px;"></i>
+        </div>
+        <h3 class="font-fredoka text-xl font-bold">Birrul Walidain</h3>
+       </div>
+       <p class="text-emerald-100 text-sm leading-relaxed">Media pembelajaran interaktif untuk siswa Madrasah Ibtidaiyah tentang berbakti kepada orang tua.</p>
+      </div>
+      <div>
+       <h4 class="font-fredoka text-lg font-bold mb-3">Materi</h4>
+       <ul class="space-y-2 text-sm text-emerald-100">
+        <li>📖 Hadis Utama</li>
+        <li>💚 Cara Berbakti</li>
+        <li>⭐ Keutamaan</li>
+        <li>🕊️ Orang Tua Wafat</li>
+       </ul>
+      </div>
+      <div>
+       <h4 class="font-fredoka text-lg font-bold mb-3">Institusi</h4>
+       <ul class="space-y-2 text-sm text-emerald-100">
+        <li class="flex items-center gap-2"><i data-lucide="graduation-cap" style="width:16px;height:16px;"></i> UIN Sunan Kudus</li>
+        <li class="flex items-center gap-2"><i data-lucide="school" style="width:16px;height:16px;"></i> MI Nurul Ilmi</li>
+       </ul>
+      </div>
+     </div>
+     <div class="border-t border-white/20 pt-6 text-center">
+      <p class="font-fredoka text-lg font-semibold">Dibuat Untuk Tugas UAS</p>
+      <p class="text-emerald-100 text-sm mt-1">Mahasiswa UIN Sunan Kudus • © 2025 dengan 💚</p>
+     </div>
+    </div>
+   </footer>
+  </div><!-- Scroll to top --> <button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-lg hover:scale-110 transition-transform z-50 flex items-center justify-center"> <i data-lucide="arrow-up" style="width:22px;height:22px;"></i> </button>
+  <script>
+  // ====== Element SDK init ======
+  if (window.elementSdk) {
+    window.elementSdk.init({
+      defaultConfig: {},
+      onConfigChange: async () => {},
+      mapToCapabilities: () => ({ recolorables: [], borderables: [], fontEditable: undefined, fontSizeable: undefined }),
+      mapToEditPanelValues: () => new Map()
+    });
+  }
+
+  lucide.createIcons();
+
+  // ====== Navigation ======
+  const pages = ['home','hadis','cara','keutamaan','wafat','game'];
+
+  function goToPage(page) {
+    pages.forEach(p => {
+      const el = document.getElementById('page-' + p);
+      if (el) el.classList.remove('active');
+    });
+    const target = document.getElementById('page-' + page);
+    if (target) target.classList.add('active');
+
+    document.querySelectorAll('[data-page]').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.page === page);
+    });
+
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    document.getElementById('mobileMenu').classList.remove('open');
+
+    // Re-trigger animations
+    if (target) {
+      target.querySelectorAll('.animate-fade-up, .animate-slide-left, .animate-slide-right').forEach(el => {
+        el.style.animation = 'none';
+        void el.offsetWidth;
+        el.style.animation = '';
+      });
+    }
+    setTimeout(() => lucide.createIcons(), 50);
+  }
+
+  document.querySelectorAll('[data-page]').forEach(btn => {
+    btn.addEventListener('click', () => goToPage(btn.dataset.page));
+  });
+
+  // Mobile menu
+  document.getElementById('menuToggle').addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  });
+
+  // Scroll to top button
+  window.addEventListener('scroll', () => {
+    document.getElementById('scrollTop').classList.toggle('show', window.scrollY > 400);
+  });
+
+  // ====== QUIZ ======
+  const questions = [
+    {
+      q: "Apa arti Birrul Walidain?",
+      options: ["Bermain", "Berbakti kepada orang tua", "Sekolah"],
+      correct: 1
+    },
+    {
+      q: "Bolehkah membentak orang tua?",
+      options: ["Ya", "Tidak boleh", "Kadang-kadang"],
+      correct: 1
+    },
+    {
+      q: "Rida Allah bergantung pada rida siapa?",
+      options: ["Teman", "Orang tua", "Guru"],
+      correct: 1
+    }
+  ];
+
+  let currentQuestion = 0;
+  let score = 0;
+  let answered = false;
+
+  function renderQuestion() {
+    if (currentQuestion >= questions.length) {
+      showResult();
+      return;
+    }
+    answered = false;
+    const q = questions[currentQuestion];
+    document.getElementById('questionText').textContent = `${currentQuestion + 1}. ${q.q}`;
+    document.getElementById('progressText').textContent = `Soal ${currentQuestion + 1} dari ${questions.length}`;
+    document.getElementById('progressBar').style.width = `${((currentQuestion) / questions.length) * 100}%`;
+
+    const optionsArea = document.getElementById('optionsArea');
+    optionsArea.innerHTML = '';
+    const letters = ['A', 'B', 'C'];
+    q.options.forEach((opt, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-option';
+      btn.innerHTML = `<span class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center flex-shrink-0">${letters[idx]}</span><span>${opt}</span>`;
+      btn.addEventListener('click', () => selectAnswer(btn, idx));
+      optionsArea.appendChild(btn);
+    });
+  }
+
+  function selectAnswer(btn, idx) {
+    if (answered) return;
+    answered = true;
+    const q = questions[currentQuestion];
+    const buttons = document.querySelectorAll('#optionsArea .quiz-option');
+    buttons.forEach((b, i) => {
+      b.disabled = true;
+      if (i === q.correct) b.classList.add('correct');
+      else if (i === idx) b.classList.add('wrong');
+    });
+    if (idx === q.correct) {
+      score++;
+      document.getElementById('score').textContent = score;
+    }
+    setTimeout(() => {
+      currentQuestion++;
+      document.getElementById('progressBar').style.width = `${((currentQuestion) / questions.length) * 100}%`;
+      renderQuestion();
+    }, 1400);
+  }
+
+  function showResult() {
+    document.getElementById('quizArea').classList.add('hidden');
+    const resultArea = document.getElementById('resultArea');
+    resultArea.classList.remove('hidden');
+    document.getElementById('finalScore').textContent = `${score} / ${questions.length}`;
+    document.getElementById('progressBar').style.width = '100%';
+
+    let emoji, title, msg;
+    if (score === questions.length) {
+      emoji = '🏆'; title = 'Luar Biasa!'; msg = 'Kamu benar semua! Kamu adalah anak hebat yang sayang orang tua! 💚';
+      launchConfetti();
+    } else if (score >= 2) {
+      emoji = '🌟'; title = 'Hebat!'; msg = 'Kamu pintar! Sedikit lagi sempurna. Terus belajar ya!';
+    } else {
+      emoji = '💪'; title = 'Tetap Semangat!'; msg = 'Jangan menyerah, ayo pelajari lagi materinya dan coba lagi!';
+    }
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultMessage').textContent = msg;
+    setTimeout(() => lucide.createIcons(), 50);
+  }
+
+  function resetQuiz() {
+    currentQuestion = 0;
+    score = 0;
+    document.getElementById('score').textContent = '0';
+    document.getElementById('quizArea').classList.remove('hidden');
+    document.getElementById('resultArea').classList.add('hidden');
+    renderQuestion();
+  }
+
+  // ====== CONFETTI ======
+  function launchConfetti() {
+    const colors = ['#10B981', '#34D399', '#F59E0B', '#FCD34D', '#EC4899', '#60A5FA'];
+    for (let i = 0; i < 80; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = Math.random() * 100 + '%';
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.animationDelay = Math.random() * 0.5 + 's';
+      c.style.animationDuration = (2 + Math.random() * 2) + 's';
+      if (Math.random() > 0.5) c.style.borderRadius = '50%';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 5000);
+    }
+  }
+
+  // ====== MISSION ======
+  let missionAccepted = false;
+  function completeMission() {
+    if (!missionAccepted) {
+      missionAccepted = true;
+      document.getElementById('missionBtnText').textContent = 'Misi Selesai! 🎉';
+      document.getElementById('missionBadge').classList.remove('hidden');
+      launchConfetti();
+    }
+  }
+
+  // ====== MUSIC (Web Audio simple ambient) ======
+  let audioCtx = null;
+  let musicPlaying = false;
+  let musicNodes = [];
+
+  function toggleMusic() {
+    if (!musicPlaying) {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      playAmbient();
+      musicPlaying = true;
+      document.getElementById('musicIcon').setAttribute('data-lucide', 'volume-2');
+    } else {
+      stopAmbient();
+      musicPlaying = false;
+      document.getElementById('musicIcon').setAttribute('data-lucide', 'volume-x');
+    }
+    lucide.createIcons();
+  }
+
+  function playAmbient() {
+    // Gentle islamic-feeling ambient pad using simple oscillators
+    const notes = [261.63, 329.63, 392.00, 523.25]; // C E G C (peaceful major)
+    const master = audioCtx.createGain();
+    master.gain.value = 0.08;
+    master.connect(audioCtx.destination);
+    musicNodes.push(master);
+
+    notes.forEach((freq, i) => {
+      const osc = audioCtx.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      const g = audioCtx.createGain();
+      g.gain.value = 0;
+      osc.connect(g);
+      g.connect(master);
+      osc.start();
+      // Slow fade-in and gentle modulation
+      g.gain.setValueAtTime(0, audioCtx.currentTime);
+      g.gain.linearRampToValueAtTime(0.25, audioCtx.currentTime + 2 + i * 0.5);
+      // LFO for gentle vibrato
+      const lfo = audioCtx.createOscillator();
+      lfo.frequency.value = 0.2 + i * 0.1;
+      const lfoGain = audioCtx.createGain();
+      lfoGain.gain.value = 1.5;
+      lfo.connect(lfoGain);
+      lfoGain.connect(osc.frequency);
+      lfo.start();
+      musicNodes.push(osc, g, lfo, lfoGain);
+    });
+  }
+
+  function stopAmbient() {
+    musicNodes.forEach(n => {
+      try { if (n.stop) n.stop(); } catch(e){}
+      try { n.disconnect(); } catch(e){}
+    });
+    musicNodes = [];
+  }
+
+  document.getElementById('musicToggle').addEventListener('click', toggleMusic);
+
+  // Init quiz
+  renderQuestion();
+  lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9f1a79a6e7c1514a',t:'MTc3NzA4OTk4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
