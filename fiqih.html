@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Puasa Sunnah – MI Nurul Ilmi & UIN Sunan Kudus</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===== CSS VARIABLES ===== */
+    :root {
+      --neon-green:    #39ff14;
+      --neon-green-dim: rgba(57, 255, 20, 0.35);
+      --gold:          #f5c842;
+      --glass-bg:      rgba(10, 30, 15, 0.55);
+      --glass-border:  rgba(57, 255, 20, 0.55);
+      --text-primary:  #e8f5e3;
+      --text-gold:     #f5c842;
+      --shadow-glow:   0 0 24px rgba(57, 255, 20, 0.45), 0 8px 32px rgba(0,0,0,0.55);
+    }
+
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ===== BACKGROUND ===== */
+    body {
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      color: var(--text-primary);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .bg-layer {
+      position: fixed;
+      inset: 0;
+      background:
+        url('https://png.pngtree.com/thumb_back/fw800/background/20240124/pngtree-happy-iftar-ramadan-illustration-design-image_15571407.png')
+        center center / cover no-repeat;
+      z-index: 0;
+    }
+
+    /* Dark overlay */
+    .bg-layer::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(3, 14, 5, 0.68);
+    }
+
+    /* ===== FLOATING PARTICLES ===== */
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--neon-green);
+      opacity: 0;
+      animation: float-up linear infinite;
+    }
+
+    @keyframes float-up {
+      0%   { opacity: 0; transform: translateY(0) scale(0.5); }
+      10%  { opacity: 0.7; }
+      90%  { opacity: 0.3; }
+      100% { opacity: 0; transform: translateY(-100vh) scale(1.2); }
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      position: fixed;
+      top: 14px;
+      right: 18px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(5, 25, 8, 0.60);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      padding: 8px 18px 8px 12px;
+      box-shadow: var(--shadow-glow);
+      animation: slide-in-right 0.8s cubic-bezier(.22,1,.36,1) both;
+    }
+
+    @keyframes slide-in-right {
+      from { opacity: 0; transform: translateX(60px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .logo-group img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      border-radius: 50%;
+      border: 1.5px solid var(--neon-green-dim);
+      background: rgba(255,255,255,0.08);
+      padding: 2px;
+    }
+
+    .logo-group span {
+      font-size: 0.68rem;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      max-width: 80px;
+    }
+
+    .logo-divider {
+      width: 1.5px;
+      height: 36px;
+      background: linear-gradient(to bottom, transparent, var(--neon-green-dim), transparent);
+    }
+
+    /* ===== MAIN WRAPPER ===== */
+    .main-wrapper {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 16px 40px;
+    }
+
+    /* ===== GLASS CARD ===== */
+    .glass-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1.8px solid var(--glass-border);
+      border-radius: 32px;
+      padding: 48px 40px 44px;
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow-glow);
+      animation: zoom-fade-in 0.9s cubic-bezier(.22,1,.36,1) 0.1s both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* inner top shimmer */
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 10%; right: 10%;
+      height: 1.5px;
+      background: linear-gradient(to right, transparent, var(--neon-green), transparent);
+      border-radius: 50%;
+    }
+
+    @keyframes zoom-fade-in {
+      from { opacity: 0; transform: scale(0.88) translateY(30px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* ===== ORNAMENTS (crescent + stars) ===== */
+    .ornaments {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      animation: fade-in 1.2s 0.5s both;
+    }
+
+    .crescent {
+      font-size: 2.2rem;
+      filter: drop-shadow(0 0 8px var(--gold));
+      animation: crescent-glow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes crescent-glow {
+      from { filter: drop-shadow(0 0 6px var(--gold)); }
+      to   { filter: drop-shadow(0 0 18px var(--gold)); }
+    }
+
+    .star {
+      font-size: 1rem;
+      color: var(--gold);
+      animation: twinkle 2s ease-in-out infinite alternate;
+    }
+    .star:nth-child(2) { animation-delay: 0.4s; font-size: 0.7rem; }
+    .star:nth-child(4) { animation-delay: 0.7s; font-size: 0.7rem; }
+
+    @keyframes twinkle {
+      from { opacity: 0.4; transform: scale(0.9); }
+      to   { opacity: 1;   transform: scale(1.15); }
+    }
+
+    /* ===== ARABIC SUBTITLE ===== */
+    .arabic-sub {
+      font-family: 'Amiri', serif;
+      font-size: 1.4rem;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+      text-shadow: 0 0 12px rgba(245,200,66,0.5);
+      animation: fade-in 1s 0.6s both;
+    }
+
+    /* ===== SMALL LABEL ===== */
+    .label-kelas {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--neon-green);
+      margin-bottom: 8px;
+      animation: fade-in 1s 0.7s both;
+    }
+
+    /* ===== MAIN TITLE ===== */
+    .main-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2rem, 8vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #ffffff 0%, var(--neon-green) 60%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+      animation: fade-in 1s 0.4s both;
+      filter: drop-shadow(0 0 12px rgba(57,255,20,0.3));
+    }
+
+    .main-subtitle {
+      font-size: 0.82rem;
+      font-weight: 300;
+      color: rgba(220,255,210,0.75);
+      margin-bottom: 32px;
+      letter-spacing: 0.04em;
+      animation: fade-in 1s 0.8s both;
+    }
+
+    /* ===== DIVIDER ===== */
+    .divider {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--neon-green), transparent);
+      margin: 0 auto 28px;
+      border-radius: 2px;
+      animation: fade-in 1s 0.9s both;
+    }
+
+    /* ===== NAV BUTTONS ===== */
+    .nav-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      animation: fade-in 1s 1s both;
+    }
+
+    .nav-btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 15px 12px;
+      border-radius: 18px;
+      border: 1.5px solid var(--neon-green-dim);
+      background: rgba(10, 40, 12, 0.55);
+      color: var(--text-primary);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s, background 0.25s, border-color 0.25s;
+      overflow: hidden;
+      letter-spacing: 0.02em;
+    }
+
+    /* shimmer sweep */
+    .nav-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 30%, rgba(57,255,20,0.12) 50%, transparent 70%);
+      transform: translateX(-100%);
+      transition: transform 0.5s;
+    }
+
+    .nav-btn:hover::after { transform: translateX(100%); }
+
+    .nav-btn:hover {
+      transform: translateY(-4px) scale(1.04);
+      background: rgba(20, 70, 22, 0.75);
+      border-color: var(--neon-green);
+      box-shadow: 0 0 22px rgba(57,255,20,0.55), 0 6px 20px rgba(0,0,0,0.4);
+      color: #fff;
+    }
+
+    .nav-btn:active {
+      transform: translateY(-1px) scale(0.98);
+    }
+
+    .btn-icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .btn-label {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1px;
+      text-align: left;
+    }
+
+    .btn-label .btn-title { font-size: 0.88rem; font-weight: 700; line-height: 1; }
+    .btn-label .btn-sub   { font-size: 0.62rem; font-weight: 300; opacity: 0.7; letter-spacing: 0.04em; }
+
+    /* Individual button accent colors */
+    .btn-materi   { border-color: rgba(57,255,20,0.5); }
+    .btn-khulasah { border-color: rgba(245,200,66,0.5); }
+    .btn-cerita   { border-color: rgba(100,200,255,0.4); }
+    .btn-cerdas   { border-color: rgba(255,120,200,0.4); }
+
+    .btn-khulasah:hover { border-color: var(--gold); box-shadow: 0 0 22px rgba(245,200,66,0.5), 0 6px 20px rgba(0,0,0,0.4); }
+    .btn-cerita:hover   { border-color: #64c8ff;      box-shadow: 0 0 22px rgba(100,200,255,0.5), 0 6px 20px rgba(0,0,0,0.4); }
+    .btn-cerdas:hover   { border-color: #ff78c8;      box-shadow: 0 0 22px rgba(255,120,200,0.5), 0 6px 20px rgba(0,0,0,0.4); }
+
+    /* ===== FOOTER NOTE ===== */
+    .footer-note {
+      margin-top: 28px;
+      font-size: 0.65rem;
+      color: rgba(200,240,200,0.45);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      animation: fade-in 1s 1.2s both;
+    }
+
+    /* ===== UTILITY ===== */
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 480px) {
+      header {
+        right: 10px;
+        top: 10px;
+        padding: 6px 12px 6px 8px;
+        gap: 10px;
+      }
+      .logo-group img { width: 30px; height: 30px; }
+      .logo-group span { font-size: 0.58rem; max-width: 66px; }
+      .logo-divider { height: 28px; }
+
+      .glass-card {
+        padding: 36px 22px 36px;
+        border-radius: 24px;
+      }
+
+      .nav-grid { grid-template-columns: 1fr; gap: 11px; }
+
+      .main-title { font-size: clamp(1.8rem, 10vw, 2.4rem); }
+    }
+
+    @media (max-width: 340px) {
+      .logo-group:last-child { display: none; }
+      .logo-divider          { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BACKGROUND LAYER -->
+  <div class="bg-layer" aria-hidden="true"></div>
+
+  <!-- FLOATING PARTICLES (generated by JS) -->
+  <div class="particles" id="particles" aria-hidden="true"></div>
+
+  <!-- ===== HEADER ===== -->
+  <header role="banner">
+    <!-- Logo MI Nurul Ilmi -->
+    <div class="logo-group">
+      <img
+        src="https://tse2.mm.bing.net/th/id/OIP.V800Wvfl-PrG6jZrhcKrLgHaHF?pid=Api&P=0&h=180"
+        alt="Logo MI Nurul Ilmi"
+        loading="lazy"
+      />
+      <span>MI Nurul<br>Ilmi</span>
+    </div>
+
+    <div class="logo-divider" aria-hidden="true"></div>
+
+    <!-- Logo UIN Sunan Kudus -->
+    <div class="logo-group">
+      <img
+        src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhKrfuU49wIAhZYKt06jMJ6vSIlXf1sXX9iY0GQvJLNJvx59xj7Uxu_7s8zzxBusFVveAOdwx2EnqGba3TF6TuKbeqLvSlM84vVkONV0O4-7YTMaf9BZDfB8dZ-HFO4sREQLqVaYc5UQ_pt0LFNT6cUHzvtIClVoDa66F6bIJoPxox-w4xDcR3zLt0KrOWH/s3724/LOGO%20UIN%20SUNAN%20KUDUS.jpg"
+        alt="Logo UIN Sunan Kudus"
+        loading="lazy"
+      />
+      <span>UIN Sunan<br>Kudus</span>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main-wrapper">
+    <div class="glass-card" role="main">
+
+      <!-- Islamic Ornaments -->
+      <div class="ornaments" aria-hidden="true">
+        <span class="star">✦</span>
+        <span class="star">✦</span>
+        <span class="crescent">☪</span>
+        <span class="star">✦</span>
+        <span class="star">✦</span>
+      </div>
+
+      <!-- Arabic subtitle -->
+      <p class="arabic-sub">صوم السنة</p>
+
+      <!-- Small label -->
+      <p class="label-kelas">Media Pembelajaran Interaktif</p>
+
+      <!-- Main title -->
+      <h1 class="main-title">Puasa Sunnah</h1>
+
+      <!-- Subtitle -->
+      <p class="main-subtitle">Fiqih Ibadah · Kelas III MI</p>
+
+      <!-- Decorative divider -->
+      <div class="divider" aria-hidden="true"></div>
+
+      <!-- Navigation buttons -->
+      <nav class="nav-grid" aria-label="Menu Navigasi">
+        <a href="materi.html" class="nav-btn btn-materi">
+          <span class="btn-icon" aria-hidden="true">📖</span>
+          <span class="btn-label">
+            <span class="btn-title">Materi</span>
+            <span class="btn-sub">Pelajaran Utama</span>
+          </span>
+        </a>
+
+        <a href="ringkasan.html" class="nav-btn btn-khulasah">
+          <span class="btn-icon" aria-hidden="true">📋</span>
+          <span class="btn-label">
+            <span class="btn-title">Khulasah</span>
+            <span class="btn-sub">Ringkasan</span>
+          </span>
+        </a>
+
+        <a href="cerita.html" class="nav-btn btn-cerita">
+          <span class="btn-icon" aria-hidden="true">📜</span>
+          <span class="btn-label">
+            <span class="btn-title">Cerita</span>
+            <span class="btn-sub">Kisah Bermakna</span>
+          </span>
+        </a>
+
+        <a href="cerdas.html" class="nav-btn btn-cerdas">
+          <span class="btn-icon" aria-hidden="true">🏆</span>
+          <span class="btn-label">
+            <span class="btn-title">Cerdas Cermat</span>
+            <span class="btn-sub">Kuis Interaktif</span>
+          </span>
+        </a>
+      </nav>
+
+      <!-- Footer note inside card -->
+      <p class="footer-note">
+        ✦ Belajar dengan Ikhlas &amp; Penuh Semangat ✦
+      </p>
+
+    </div>
+  </main>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    /* ─── GENERATE FLOATING PARTICLES ─── */
+    (function generateParticles() {
+      const container = document.getElementById('particles');
+      const COUNT = 28;
+
+      for (let i = 0; i < COUNT; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+
+        const size  = Math.random() * 4 + 2;          // 2–6 px
+        const left  = Math.random() * 100;             // 0–100 vw
+        const delay = Math.random() * 12;              // stagger start
+        const dur   = Math.random() * 10 + 8;         // 8–18 s
+        const hue   = Math.random() > 0.6 ? '60,200,80' : '57,255,20'; // green variants
+
+        Object.assign(p.style, {
+          width:           `${size}px`,
+          height:          `${size}px`,
+          left:            `${left}vw`,
+          bottom:          `-${size}px`,
+          background:      `rgb(${hue})`,
+          animationDuration:  `${dur}s`,
+          animationDelay:     `${delay}s`,
+          filter:          `blur(${Math.random() > 0.5 ? '1px' : '0px'})`,
+        });
+
+        container.appendChild(p);
+      }
+    })();
+
+    /* ─── BUTTON RIPPLE EFFECT ─── */
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        // prevent if navigating
+        const ripple = document.createElement('span');
+        const rect   = this.getBoundingClientRect();
+        const size   = Math.max(rect.width, rect.height) * 1.6;
+        const x      = e.clientX - rect.left - size / 2;
+        const y      = e.clientY - rect.top  - size / 2;
+
+        Object.assign(ripple.style, {
+          position:  'absolute',
+          width:     `${size}px`,
+          height:    `${size}px`,
+          left:      `${x}px`,
+          top:       `${y}px`,
+          borderRadius: '50%',
+          background: 'rgba(57, 255, 20, 0.18)',
+          transform: 'scale(0)',
+          animation: 'ripple-expand 0.55s ease-out forwards',
+          pointerEvents: 'none',
+        });
+
+        this.appendChild(ripple);
+        ripple.addEventListener('animationend', () => ripple.remove());
+      });
+    });
+
+    /* Ripple keyframes injected dynamically */
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes ripple-expand {
+        to { transform: scale(1); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>
