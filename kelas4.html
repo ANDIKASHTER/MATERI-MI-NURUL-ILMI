@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pilih Mapel - Mari Belajar Bersama</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --neon: #39ff14;
+      --neon-dim: #1a8a0a;
+      --bg-dark: #0a0a0f;
+      --bg-card: #111118;
+      --surface: #1a1a24;
+      --text-main: #e0e0e0;
+    }
+
+    html, body { height: 100%; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    .font-orbitron { font-family: 'Orbitron', monospace; }
+
+    /* Laser lines background */
+    .laser-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .laser-line {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--neon), transparent);
+      opacity: 0.15;
+      animation: laserMove linear infinite;
+    }
+
+    .laser-line:nth-child(1) { top: 10%; width: 80%; left: -20%; animation-duration: 8s; }
+    .laser-line:nth-child(2) { top: 25%; width: 60%; left: 10%; animation-duration: 12s; animation-delay: 2s; }
+    .laser-line:nth-child(3) { top: 45%; width: 90%; left: -30%; animation-duration: 10s; animation-delay: 4s; }
+    .laser-line:nth-child(4) { top: 65%; width: 70%; left: 5%; animation-duration: 14s; animation-delay: 1s; }
+    .laser-line:nth-child(5) { top: 80%; width: 50%; left: 20%; animation-duration: 9s; animation-delay: 3s; }
+    .laser-line:nth-child(6) { top: 92%; width: 85%; left: -10%; animation-duration: 11s; animation-delay: 5s; }
+
+    .laser-v {
+      position: absolute;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, var(--neon), transparent);
+      opacity: 0.08;
+      animation: laserMoveV linear infinite;
+    }
+    .laser-v:nth-child(7) { left: 15%; height: 60%; top: -20%; animation-duration: 13s; }
+    .laser-v:nth-child(8) { left: 50%; height: 70%; top: -30%; animation-duration: 16s; animation-delay: 3s; }
+    .laser-v:nth-child(9) { left: 80%; height: 50%; top: -10%; animation-duration: 11s; animation-delay: 6s; }
+
+    @keyframes laserMove {
+      0% { transform: translateX(-100%); opacity: 0; }
+      10% { opacity: 0.15; }
+      90% { opacity: 0.15; }
+      100% { transform: translateX(200%); opacity: 0; }
+    }
+    @keyframes laserMoveV {
+      0% { transform: translateY(-100%); opacity: 0; }
+      10% { opacity: 0.08; }
+      90% { opacity: 0.08; }
+      100% { transform: translateY(200%); opacity: 0; }
+    }
+
+    /* Particles */
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--neon);
+      border-radius: 50%;
+      opacity: 0;
+      animation: particleFloat linear infinite;
+    }
+    @keyframes particleFloat {
+      0% { opacity: 0; transform: translateY(0) scale(0); }
+      20% { opacity: 0.6; transform: scale(1); }
+      80% { opacity: 0.3; }
+      100% { opacity: 0; transform: translateY(-200px) scale(0); }
+    }
+
+    /* Neon glow text */
+    .neon-glow {
+      text-shadow:
+        0 0 10px var(--neon),
+        0 0 30px var(--neon),
+        0 0 60px rgba(57, 255, 20, 0.3);
+    }
+
+    .neon-glow-subtle {
+      text-shadow:
+        0 0 8px rgba(57, 255, 20, 0.5),
+        0 0 20px rgba(57, 255, 20, 0.2);
+    }
+
+    /* Neon subject button */
+    .subject-btn {
+      position: relative;
+      border: 2px solid var(--neon);
+      background: transparent;
+      color: var(--neon);
+      padding: 28px 40px;
+      border-radius: 14px;
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .subject-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--neon);
+      opacity: 0;
+      transition: opacity 0.3s;
+      border-radius: 12px;
+    }
+    .subject-btn:hover::before { opacity: 0.12; }
+    .subject-btn:hover {
+      box-shadow: 0 0 25px rgba(57, 255, 20, 0.5), 0 0 50px rgba(57, 255, 20, 0.2);
+      transform: scale(1.06);
+    }
+    .subject-btn:active { transform: scale(0.94); }
+    .subject-btn span { position: relative; z-index: 1; }
+
+    /* Logo hover */
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: default;
+      transition: all 0.3s;
+    }
+    .logo-wrap:hover {
+      filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.5));
+      transform: scale(1.04);
+    }
+    .logo-wrap img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(57, 255, 20, 0.3);
+    }
+
+    /* Fade in animation */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 0.8s ease forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-delay-1 { animation-delay: 0.2s; }
+    .fade-delay-2 { animation-delay: 0.4s; }
+    .fade-delay-3 { animation-delay: 0.6s; }
+    .fade-delay-4 { animation-delay: 0.8s; }
+
+    /* Grid for subjects */
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 700px;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: var(--neon-dim); border-radius: 3px; }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <!-- Laser background -->
+  <div class="laser-bg" aria-hidden="true">
+   <div class="laser-line"></div>
+   <div class="laser-line"></div>
+   <div class="laser-line"></div>
+   <div class="laser-line"></div>
+   <div class="laser-line"></div>
+   <div class="laser-line"></div>
+   <div class="laser-v"></div>
+   <div class="laser-v"></div>
+   <div class="laser-v"></div>
+   <div id="particles"></div>
+  </div>
+  <div class="h-full w-full overflow-auto" style="position: relative; z-index: 1;">
+   <!-- HEADER -->
+   <header class="w-full px-4 py-4 sm:px-8">
+    <div class="flex flex-wrap items-center justify-center sm:justify-end gap-4 sm:gap-8">
+     <div class="logo-wrap">
+      <img src="https://tse2.mm.bing.net/th/id/OIP.V800Wvfl-PrG6jZrhcKrLgHaHF?pid=Api&amp;P=0&amp;h=180" alt="Logo MI Nurul Ilmi" loading="lazy" onerror="this.style.background='#1a8a0a'; this.alt='Logo unavailable';"> <span class="font-orbitron text-sm sm:text-base font-bold neon-glow-subtle" style="color: var(--neon);">MI NURUL ILMI</span>
+     </div>
+     <div class="logo-wrap">
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhKrfuU49wIAhZYKt06jMJ6vSIlXf1sXX9iY0GQvJLNJvx59xj7Uxu_7s8zzxBusFVveAOdwx2EnqGba3TF6TuKbeqLvSlM84vVkONV0O4-7YTMaf9BZDfB8dZ-HFO4sREQLqVaYc5UQ_pt0LFNT6cUHzvtIClVoDa66F6bIJoPxox-w4xDcR3zLt0KrOWH/s3724/LOGO%20UIN%20SUNAN%20KUDUS.jpg" alt="Logo UIN Sunan Kudus" loading="lazy" onerror="this.style.background='#1a8a0a'; this.alt='Logo unavailable';"> <span class="font-orbitron text-sm sm:text-base font-bold neon-glow-subtle" style="color: var(--neon);">UIN SUNAN KUDUS</span>
+     </div>
+    </div>
+   </header><!-- HERO -->
+   <main class="flex flex-col items-center justify-center px-4 py-16 sm:py-20 text-center">
+    <h1 id="heroTitle" class="font-orbitron text-4xl sm:text-5xl md:text-6xl font-black neon-glow fade-up" style="color: var(--neon); line-height: 1.2;">BELAJAR APA HARI INI?</h1>
+    <p id="heroSubtitle" class="mt-4 text-lg sm:text-xl md:text-2xl font-light fade-up fade-delay-1" style="color: rgba(224,224,224,0.75);">Pilih Mapel Yang Akan Dipelajari</p><!-- Subject Buttons Grid -->
+    <div class="subjects-grid mt-14 fade-up fade-delay-2">
+     <button class="subject-btn" onclick="window.open('fiqih.html','_blank')"> <span><i data-lucide="book" style="display:inline-block;vertical-align:middle;width:28px;height:28px;margin-right:10px;"></i>Fiqih</span> </button> <button class="subject-btn" onclick="window.open('quran.html','_blank')"> <span><i data-lucide="scroll" style="display:inline-block;vertical-align:middle;width:28px;height:28px;margin-right:10px;"></i>Al-Qur'an<br>
+       Hadits</span> </button> <button class="subject-btn" onclick="window.open('aqidah-akhlak.html','_blank')"> <span><i data-lucide="heart" style="display:inline-block;vertical-align:middle;width:28px;height:28px;margin-right:10px;"></i>Aqidah<br>
+       Akhlak</span> </button> <button class="subject-btn" onclick="window.open('ski.html','_blank')"> <span><i data-lucide="clock" style="display:inline-block;vertical-align:middle;width:28px;height:28px;margin-right:10px;"></i>SKI</span> </button>
+    </div><!-- Decorative tagline -->
+    <p class="mt-16 text-xs sm:text-sm fade-up fade-delay-3" style="color: rgba(57,255,20,0.3); letter-spacing: 4px; font-family: 'Orbitron', monospace;">✦ ILMU · IMAN · AKHLAK ✦</p>
+   </main>
+  </div>
+  <script>
+    // Generate particles
+    const particleContainer = document.getElementById('particles');
+    for (let i = 0; i < 20; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.top = Math.random() * 100 + '%';
+      p.style.animationDuration = (4 + Math.random() * 6) + 's';
+      p.style.animationDelay = (Math.random() * 8) + 's';
+      particleContainer.appendChild(p);
+    }
+
+    // Element SDK
+    const defaultConfig = {
+      hero_title: 'BELAJAR APA HARI INI?',
+      hero_subtitle: 'Pilih Mapel Yang Akan Dipelajari',
+      background_color: '#0a0a0f',
+      surface_color: '#111118',
+      text_color: '#e0e0e0',
+      primary_action_color: '#39ff14',
+      secondary_action_color: '#1a8a0a',
+      font_family: 'Poppins',
+      font_size: 16
+    };
+
+    async function onConfigChange(config) {
+      const title = config.hero_title || defaultConfig.hero_title;
+      const subtitle = config.hero_subtitle || defaultConfig.hero_subtitle;
+      const bg = config.background_color || defaultConfig.background_color;
+      const surface = config.surface_color || defaultConfig.surface_color;
+      const text = config.text_color || defaultConfig.text_color;
+      const primary = config.primary_action_color || defaultConfig.primary_action_color;
+      const secondary = config.secondary_action_color || defaultConfig.secondary_action_color;
+      const font = config.font_family || defaultConfig.font_family;
+      const size = config.font_size || defaultConfig.font_size;
+
+      document.getElementById('heroTitle').textContent = title;
+      document.getElementById('heroSubtitle').textContent = subtitle;
+
+      document.documentElement.style.setProperty('--bg-dark', bg);
+      document.documentElement.style.setProperty('--bg-card', surface);
+      document.documentElement.style.setProperty('--text-main', text);
+      document.documentElement.style.setProperty('--neon', primary);
+      document.documentElement.style.setProperty('--neon-dim', secondary);
+
+      document.body.style.backgroundColor = bg;
+      document.body.style.color = text;
+      document.body.style.fontFamily = `${font}, Poppins, sans-serif`;
+      document.body.style.fontSize = size + 'px';
+
+      document.querySelectorAll('.font-orbitron').forEach(el => {
+        el.style.fontFamily = `Orbitron, ${font}, monospace`;
+      });
+
+      document.querySelectorAll('.neon-glow, .neon-glow-subtle').forEach(el => {
+        el.style.color = primary;
+      });
+      document.querySelectorAll('.subject-btn').forEach(el => {
+        el.style.borderColor = primary;
+        el.style.color = primary;
+      });
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+            { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+            { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+            { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+            { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+          }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['hero_title', config.hero_title || defaultConfig.hero_title],
+          ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle]
+        ])
+      });
+    }
+
+    // Init Lucide icons
+    lucide.createIcons();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ef30bdb55ab9c98',t:'MTc3NjY3NjU0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
