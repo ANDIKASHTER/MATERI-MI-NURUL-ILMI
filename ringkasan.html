@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khulasah – Puasa Sunah | MI Nurul Ilmi</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ══════════════════════════════════════════
+       CSS VARIABLES  –  YELLOW / GOLD THEME
+    ══════════════════════════════════════════ */
+    :root {
+      --gold:          #ffd700;
+      --gold-bright:   #ffe94d;
+      --gold-dim:      rgba(255, 215, 0, 0.32);
+      --gold-glow:     rgba(255, 215, 0, 0.55);
+      --gold-soft:     rgba(255, 215, 0, 0.12);
+      --green-accent:  #39ff14;
+      --green-dim:     rgba(57, 255, 20, 0.28);
+
+      --glass-bg:      rgba(18, 14, 2, 0.60);
+      --glass-inner:   rgba(28, 22, 2, 0.65);
+      --border:        rgba(255, 215, 0, 0.52);
+      --text:          #fff8e1;
+      --text-muted:    rgba(255, 240, 180, 0.68);
+
+      --shadow:        0 0 32px rgba(255,215,0,0.30), 0 10px 40px rgba(0,0,0,0.65);
+      --radius-lg:     28px;
+      --radius-md:     16px;
+      --radius-sm:     10px;
+    }
+
+    /* ══════════════════════════════════════════
+       RESET & BASE
+    ══════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ══════════════════════════════════════════
+       BACKGROUND
+    ══════════════════════════════════════════ */
+    .bg-layer {
+      position: fixed;
+      inset: 0;
+      background:
+        url('https://png.pngtree.com/thumb_back/fw800/background/20240124/pngtree-happy-iftar-ramadan-illustration-design-image_15571407.png')
+        center center / cover no-repeat;
+      z-index: 0;
+    }
+    .bg-layer::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(5, 3, 0, 0.74);
+    }
+
+    /* ══════════════════════════════════════════
+       PARTICLES
+    ══════════════════════════════════════════ */
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0;
+      animation: float-up linear infinite;
+    }
+    @keyframes float-up {
+      0%   { opacity: 0;   transform: translateY(0) scale(0.5) rotate(0deg); }
+      15%  { opacity: 0.7; }
+      85%  { opacity: 0.2; }
+      100% { opacity: 0;   transform: translateY(-100vh) scale(1.4) rotate(180deg); }
+    }
+
+    /* ══════════════════════════════════════════
+       HEADER  (identical structure, gold tint)
+    ══════════════════════════════════════════ */
+    header {
+      position: fixed;
+      top: 14px;
+      right: 18px;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(15, 10, 0, 0.68);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 7px 16px 7px 10px;
+      box-shadow: var(--shadow);
+      animation: slide-right 0.8s cubic-bezier(.22,1,.36,1) both;
+    }
+    @keyframes slide-right {
+      from { opacity: 0; transform: translateX(60px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .logo-group { display: flex; align-items: center; gap: 7px; }
+    .logo-group img {
+      width: 36px; height: 36px;
+      object-fit: contain;
+      border-radius: 50%;
+      border: 1.5px solid var(--gold-dim);
+      background: rgba(255,255,255,0.07);
+      padding: 2px;
+    }
+    .logo-group span {
+      font-size: 0.64rem;
+      font-weight: 700;
+      line-height: 1.25;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      max-width: 72px;
+      color: var(--text);
+    }
+    .logo-divider {
+      width: 1.5px; height: 32px;
+      background: linear-gradient(to bottom, transparent, var(--gold-dim), transparent);
+    }
+
+    /* ══════════════════════════════════════════
+       PAGE WRAPPER
+    ══════════════════════════════════════════ */
+    .page-wrapper {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 90px 16px 44px;
+    }
+
+    /* ══════════════════════════════════════════
+       MAIN GLASS CARD
+    ══════════════════════════════════════════ */
+    .main-card {
+      width: 100%;
+      max-width: 860px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1.8px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px 36px 28px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      animation: card-in 0.75s cubic-bezier(.22,1,.36,1) 0.1s both;
+    }
+    @keyframes card-in {
+      from { opacity: 0; transform: translateY(34px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    /* Gold shimmer line top */
+    .main-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 8%; right: 8%;
+      height: 1.8px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      border-radius: 50%;
+    }
+    /* Subtle corner glow */
+    .main-card::after {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,215,0,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ══════════════════════════════════════════
+       TOP BAR
+    ══════════════════════════════════════════ */
+    .top-bar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 22px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255,215,0,0.20);
+    }
+
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,215,0,0.10);
+      border: 1px solid var(--gold-dim);
+      border-radius: 50px;
+      padding: 4px 14px 4px 8px;
+      font-size: 0.70rem;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .badge-icon { font-size: 1rem; }
+
+    .page-main-title {
+      font-size: clamp(0.92rem, 3vw, 1.18rem);
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      margin-top: 6px;
+    }
+    .page-main-title span {
+      background: linear-gradient(100deg, #fff 0%, var(--gold-bright) 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Page indicator */
+    .page-indicator { display: flex; align-items: center; gap: 8px; }
+    .indicator-text {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+    }
+    .indicator-dots { display: flex; gap: 5px; }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,215,0,0.20);
+      border: 1px solid var(--gold-dim);
+      transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+    .dot.active {
+      background: var(--gold);
+      box-shadow: 0 0 9px var(--gold-glow);
+      transform: scale(1.3);
+    }
+
+    /* ══════════════════════════════════════════
+       SLIDE SYSTEM
+    ══════════════════════════════════════════ */
+    .slides-container { position: relative; min-height: 340px; }
+
+    .slide { display: none; }
+    .slide.active {
+      display: block;
+      animation: sld-in 0.48s cubic-bezier(.22,1,.36,1) both;
+    }
+    .slide.exit-left {
+      animation: sld-out-left 0.28s ease-in forwards;
+    }
+    .slide.exit-right {
+      animation: sld-out-right 0.28s ease-in forwards;
+    }
+
+    @keyframes sld-in         { from { opacity:0; transform:translateX(28px);  } to { opacity:1; transform:translateX(0); } }
+    @keyframes sld-in-rev     { from { opacity:0; transform:translateX(-28px); } to { opacity:1; transform:translateX(0); } }
+    @keyframes sld-out-left   { from { opacity:1; transform:translateX(0); }    to { opacity:0; transform:translateX(-28px); } }
+    @keyframes sld-out-right  { from { opacity:1; transform:translateX(0); }    to { opacity:0; transform:translateX(28px); } }
+
+    /* ══════════════════════════════════════════
+       SLIDE TYPOGRAPHY
+    ══════════════════════════════════════════ */
+    .slide-title {
+      font-size: clamp(1.05rem, 3.5vw, 1.35rem);
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .slide-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px; height: 1.2em;
+      background: var(--gold);
+      border-radius: 2px;
+      box-shadow: 0 0 10px var(--gold-glow);
+      flex-shrink: 0;
+    }
+
+    .intro-text {
+      font-size: 0.86rem;
+      line-height: 1.80;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .intro-text strong { color: var(--text); }
+
+    /* ══════════════════════════════════════════
+       SLIDE 1 – LAYOUT  (ornament + list)
+    ══════════════════════════════════════════ */
+    .s1-layout {
+      display: grid;
+      grid-template-columns: 1fr 200px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* Ornament column */
+    .s1-ornament {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      background: var(--glass-inner);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 24px 16px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .s1-ornament::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 30%, rgba(255,215,0,0.10) 0%, transparent 70%);
+    }
+    .orn-moon {
+      font-size: 3.8rem;
+      filter: drop-shadow(0 0 14px var(--gold));
+      animation: moon-pulse 3.5s ease-in-out infinite alternate;
+      line-height: 1;
+    }
+    @keyframes moon-pulse {
+      from { filter: drop-shadow(0 0 8px var(--gold)); transform: rotate(-5deg); }
+      to   { filter: drop-shadow(0 0 22px var(--gold)); transform: rotate(5deg); }
+    }
+    .orn-mosque { font-size: 2.4rem; filter: drop-shadow(0 0 8px rgba(255,215,0,0.6)); }
+    .orn-stars { display: flex; gap: 6px; }
+    .orn-star {
+      font-size: 0.9rem;
+      color: var(--gold);
+      animation: star-twinkle 2s ease-in-out infinite alternate;
+    }
+    .orn-star:nth-child(2) { animation-delay: 0.5s; }
+    .orn-star:nth-child(3) { animation-delay: 1s; }
+    @keyframes star-twinkle {
+      from { opacity: 0.3; transform: scale(0.85); }
+      to   { opacity: 1;   transform: scale(1.2); }
+    }
+    .orn-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--gold-dim);
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: rgba(255,215,0,0.65);
+    }
+
+    /* Puasa list */
+    .puasa-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .puasa-item {
+      background: var(--glass-inner);
+      border: 1px solid rgba(255,215,0,0.22);
+      border-radius: var(--radius-md);
+      padding: 13px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.25s;
+    }
+    .puasa-item:hover {
+      border-color: var(--gold-dim);
+      box-shadow: 0 0 16px rgba(255,215,0,0.18);
+      transform: translateX(4px);
+    }
+
+    .puasa-letter {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(255,215,0,0.15);
+      border: 1.5px solid var(--gold-dim);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--gold);
+      flex-shrink: 0;
+      text-transform: uppercase;
+    }
+
+    .puasa-body { flex: 1; }
+    .puasa-name {
+      font-size: 0.90rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .puasa-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .puasa-date-tag {
+      display: inline-block;
+      background: rgba(255,215,0,0.12);
+      border: 1px solid var(--gold-dim);
+      border-radius: 20px;
+      padding: 1px 9px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--gold-bright);
+      margin-top: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ══════════════════════════════════════════
+       SLIDE 2 – RUKUN  (point-item layout)
+    ══════════════════════════════════════════ */
+    .rukun-list { display: flex; flex-direction: column; gap: 16px; }
+
+    .rukun-item {
+      background: var(--glass-inner);
+      border: 1.5px solid rgba(255,215,0,0.22);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .rukun-item:hover {
+      border-color: var(--gold-dim);
+      box-shadow: 0 0 18px rgba(255,215,0,0.20);
+    }
+    /* left accent bar */
+    .rukun-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 4px;
+      background: linear-gradient(to bottom, var(--gold), rgba(255,215,0,0.20));
+      border-radius: 0 0 0 var(--radius-md);
+    }
+
+    .rukun-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .rukun-badge {
+      background: rgba(255,215,0,0.15);
+      border: 1px solid var(--gold-dim);
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .rukun-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .rukun-body {
+      font-size: 0.83rem;
+      line-height: 1.78;
+      color: var(--text-muted);
+      padding-left: 4px;
+    }
+    .rukun-body strong { color: var(--text); }
+
+    .arabic-box {
+      background: rgba(255,215,0,0.08);
+      border: 1px solid rgba(255,215,0,0.28);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      margin-top: 12px;
+      font-family: 'Amiri', serif;
+      font-size: 1.35rem;
+      color: var(--gold);
+      text-align: center;
+      direction: rtl;
+      line-height: 2.2;
+      text-shadow: 0 0 14px rgba(255,215,0,0.45);
+    }
+    .latin-text {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-align: center;
+      font-style: italic;
+      margin-top: 4px;
+      direction: ltr;
+    }
+
+    .waktu-timeline {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-top: 14px;
+      overflow: hidden;
+      border-radius: 50px;
+      border: 1px solid rgba(255,215,0,0.25);
+    }
+    .tl-segment {
+      flex: 1;
+      padding: 8px 10px;
+      text-align: center;
+      font-size: 0.70rem;
+      font-weight: 600;
+      line-height: 1.3;
+      transition: background 0.3s;
+    }
+    .tl-segment.active-zone {
+      background: rgba(255,215,0,0.18);
+      color: var(--gold-bright);
+    }
+    .tl-segment.inactive-zone {
+      background: rgba(255,255,255,0.04);
+      color: var(--text-muted);
+    }
+    .tl-arrow {
+      padding: 8px 4px;
+      font-size: 0.75rem;
+      color: var(--gold-dim);
+      background: rgba(255,255,255,0.04);
+    }
+
+    /* ══════════════════════════════════════════
+       SLIDE 3 – PERBEDAAN (comparison)
+    ══════════════════════════════════════════ */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .compare-col {
+      background: var(--glass-inner);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid rgba(255,215,0,0.22);
+    }
+    .compare-head {
+      padding: 11px 16px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .compare-head.wajib {
+      background: rgba(255,120,30,0.18);
+      color: #ffaa55;
+      border-bottom: 1px solid rgba(255,120,30,0.28);
+    }
+    .compare-head.sunnah {
+      background: rgba(255,215,0,0.15);
+      color: var(--gold);
+      border-bottom: 1px solid var(--gold-dim);
+    }
+    .compare-body { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
+    .compare-row {
+      font-size: 0.80rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      padding-left: 12px;
+      border-left: 2.5px solid rgba(255,215,0,0.28);
+    }
+    .compare-row strong { color: var(--text); }
+
+    .diff-cards { display: flex; flex-direction: column; gap: 10px; }
+    .diff-card {
+      background: var(--glass-inner);
+      border: 1px solid rgba(255,215,0,0.22);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.25s;
+    }
+    .diff-card:hover {
+      border-color: var(--gold-dim);
+      box-shadow: 0 0 14px rgba(255,215,0,0.18);
+      transform: translateX(4px);
+    }
+    .diff-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 6px rgba(255,215,0,0.5));
+    }
+    .diff-body { flex: 1; }
+    .diff-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--gold-bright);
+      margin-bottom: 3px;
+    }
+    .diff-desc {
+      font-size: 0.79rem;
+      line-height: 1.65;
+      color: var(--text-muted);
+    }
+
+    .info-box {
+      background: rgba(255,215,0,0.07);
+      border: 1px solid var(--gold-dim);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      margin-top: 14px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.72;
+    }
+    .info-box strong { color: var(--gold); }
+
+    /* ══════════════════════════════════════════
+       NAVIGATION BAR
+    ══════════════════════════════════════════ */
+    .nav-bar {
+      margin-top: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 11px 22px;
+      border-radius: 50px;
+      border: 1.5px solid var(--gold-dim);
+      background: rgba(22, 16, 0, 0.65);
+      color: var(--text);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.25s, box-shadow 0.25s, background 0.25s, border-color 0.25s;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 30%, rgba(255,215,0,0.12) 50%, transparent 70%);
+      transform: translateX(-100%);
+      transition: transform 0.45s;
+    }
+    .btn:hover::after { transform: translateX(100%); }
+    .btn:hover {
+      transform: translateY(-3px) scale(1.04);
+      border-color: var(--gold);
+      box-shadow: 0 0 22px var(--gold-glow), 0 6px 18px rgba(0,0,0,0.4);
+      background: rgba(40, 28, 0, 0.78);
+      color: #fff;
+    }
+    .btn:disabled, .btn.disabled {
+      opacity: 0.32;
+      pointer-events: none;
+      transform: none;
+    }
+    .btn-home {
+      border-color: rgba(57,255,20,0.35);
+    }
+    .btn-home:hover {
+      border-color: var(--green-accent);
+      box-shadow: 0 0 20px rgba(57,255,20,0.40), 0 6px 18px rgba(0,0,0,0.4);
+    }
+
+    /* ══════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════ */
+    @media (max-width: 640px) {
+      .main-card { padding: 24px 16px 20px; border-radius: 22px; }
+      .top-bar { flex-direction: column; align-items: flex-start; }
+      .s1-layout { grid-template-columns: 1fr; }
+      .s1-ornament { flex-direction: row; justify-content: center; padding: 16px; }
+      .compare-grid { grid-template-columns: 1fr; }
+      .nav-bar { justify-content: center; }
+      .btn { font-size: 0.76rem; padding: 10px 16px; }
+      .waktu-timeline { flex-direction: column; border-radius: var(--radius-sm); }
+      .tl-arrow { transform: rotate(90deg); }
+    }
+    @media (max-width: 400px) {
+      header { right: 8px; top: 8px; padding: 5px 10px 5px 7px; gap: 8px; }
+      .logo-group img { width: 28px; height: 28px; }
+      .logo-group span { font-size: 0.56rem; max-width: 60px; }
+      .logo-group:last-child { display: none; }
+      .logo-divider { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BACKGROUND -->
+  <div class="bg-layer" aria-hidden="true"></div>
+
+  <!-- PARTICLES -->
+  <div class="particles" id="particles" aria-hidden="true"></div>
+
+  <!-- ═══════ HEADER ═══════ -->
+  <header role="banner">
+    <div class="logo-group">
+      <img src="https://tse2.mm.bing.net/th/id/OIP.V800Wvfl-PrG6jZrhcKrLgHaHF?pid=Api&P=0&h=180"
+           alt="Logo MI Nurul Ilmi" loading="lazy" />
+      <span>MI Nurul<br>Ilmi</span>
+    </div>
+    <div class="logo-divider" aria-hidden="true"></div>
+    <div class="logo-group">
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhKrfuU49wIAhZYKt06jMJ6vSIlXf1sXX9iY0GQvJLNJvx59xj7Uxu_7s8zzxBusFVveAOdwx2EnqGba3TF6TuKbeqLvSlM84vVkONV0O4-7YTMaf9BZDfB8dZ-HFO4sREQLqVaYc5UQ_pt0LFNT6cUHzvtIClVoDa66F6bIJoPxox-w4xDcR3zLt0KrOWH/s3724/LOGO%20UIN%20SUNAN%20KUDUS.jpg"
+           alt="Logo UIN Sunan Kudus" loading="lazy" />
+      <span>UIN Sunan<br>Kudus</span>
+    </div>
+  </header>
+
+  <!-- ═══════ MAIN ═══════ -->
+  <div class="page-wrapper">
+    <div class="main-card">
+
+      <!-- TOP BAR -->
+      <div class="top-bar">
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div class="section-badge">
+            <span class="badge-icon">🌙</span>
+            Khulasah · Ringkasan Materi
+          </div>
+          <h1 class="page-main-title">
+            <span>A. Puasa Sunah – Pengertian &amp; Ketentuan</span>
+          </h1>
+        </div>
+        <div class="page-indicator">
+          <span class="indicator-text" id="indicatorText">1 / 3</span>
+          <div class="indicator-dots">
+            <div class="dot active" id="dot0"></div>
+            <div class="dot" id="dot1"></div>
+            <div class="dot" id="dot2"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ SLIDES ═══ -->
+      <div class="slides-container">
+
+        <!-- ─────────────────────────────────────
+             SLIDE 1 – Pengertian Puasa Sunah
+        ───────────────────────────────────── -->
+        <div class="slide active" id="slide-0">
+          <h2 class="slide-title">Pengertian Puasa Sunah</h2>
+
+          <p class="intro-text">
+            Puasa sunah adalah puasa yang apabila <strong>dilakukan mendapat pahala</strong>
+            dan apabila <strong>tidak dilakukan tidak berdosa</strong>.
+            Puasa-puasa yang disunahkan antara lain sebagai berikut:
+          </p>
+
+          <div class="s1-layout">
+
+            <!-- List puasa sunah -->
+            <div class="puasa-list">
+
+              <div class="puasa-item">
+                <div class="puasa-letter">a</div>
+                <div class="puasa-body">
+                  <p class="puasa-name">Puasa Syawal</p>
+                  <p class="puasa-desc">Puasa enam hari di bulan Syawal setelah tanggal 1 Syawal.</p>
+                  <span class="puasa-date-tag">📅 2–7 Syawal</span>
+                </div>
+              </div>
+
+              <div class="puasa-item">
+                <div class="puasa-letter">b</div>
+                <div class="puasa-body">
+                  <p class="puasa-name">Puasa Arafah</p>
+                  <p class="puasa-desc">Puasa sunah yang dilakukan pada tanggal 9 Zulhijah.</p>
+                  <span class="puasa-date-tag">📅 9 Zulhijah</span>
+                </div>
+              </div>
+
+              <div class="puasa-item">
+                <div class="puasa-letter">c</div>
+                <div class="puasa-body">
+                  <p class="puasa-name">Puasa Asyura</p>
+                  <p class="puasa-desc">Puasa sunah pada tanggal 10 Muharam.</p>
+                  <span class="puasa-date-tag">📅 10 Muharam</span>
+                </div>
+              </div>
+
+              <div class="puasa-item">
+                <div class="puasa-letter">d</div>
+                <div class="puasa-body">
+                  <p class="puasa-name">Puasa Senin dan Kamis</p>
+                  <p class="puasa-desc">Puasa setiap hari Senin dan Kamis setiap pekan.</p>
+                  <span class="puasa-date-tag">📅 Senin &amp; Kamis</span>
+                </div>
+              </div>
+
+              <div class="puasa-item">
+                <div class="puasa-letter">e</div>
+                <div class="puasa-body">
+                  <p class="puasa-name">Puasa Ayyamul Bidh</p>
+                  <p class="puasa-desc">Puasa pertengahan bulan Qamariyah pada tanggal 13, 14, dan 15.</p>
+                  <span class="puasa-date-tag">📅 13, 14, 15 Qamariyah</span>
+                </div>
+              </div>
+
+            </div><!-- /puasa-list -->
+
+            <!-- Ornament column -->
+            <div class="s1-ornament">
+              <div class="orn-moon">☪</div>
+              <div class="orn-mosque">🕌</div>
+              <div class="orn-stars">
+                <span class="orn-star">✦</span>
+                <span class="orn-star">✦</span>
+                <span class="orn-star">✦</span>
+              </div>
+              <p class="orn-label">Puasa<br>Sunah</p>
+            </div>
+
+          </div><!-- /s1-layout -->
+        </div><!-- /slide-0 -->
+
+        <!-- ─────────────────────────────────────
+             SLIDE 2 – Rukun Puasa Sunah
+        ───────────────────────────────────── -->
+        <div class="slide" id="slide-1">
+          <h2 class="slide-title">Rukun Puasa Sunah</h2>
+
+          <p class="intro-text">
+            Rukun adalah hal-hal yang <strong>wajib dipenuhi</strong> agar ibadah puasa menjadi sah.
+            Puasa sunah memiliki dua rukun utama yang harus dijaga sepanjang hari puasa.
+          </p>
+
+          <div class="rukun-list">
+
+            <!-- Rukun A: Niat -->
+            <div class="rukun-item">
+              <div class="rukun-header">
+                <span class="rukun-badge">Rukun a</span>
+                <span class="rukun-title">Niat Puasa</span>
+              </div>
+              <p class="rukun-body">
+                Niat puasa sunah <strong>tidak harus malam hari</strong>.
+                Niat dapat dilakukan <strong>setelah terbit fajar hingga sebelum waktu Zuhur</strong>,
+                dengan syarat belum makan, minum, atau melakukan hal yang membatalkan puasa sejak fajar shadiq.
+              </p>
+
+              <div class="arabic-box">
+                نَوَيْتُ صَوْمَ غَدٍ سُنَّةً لِلّٰهِ تَعَالَى
+              </div>
+              <p class="latin-text">
+                "Nawaitu shauma ghadin sunnatan lillāhi ta'ālā."
+              </p>
+
+              <!-- Timeline waktu niat -->
+              <div class="waktu-timeline">
+                <div class="tl-segment inactive-zone">🌙 Malam<br><small>tidak wajib</small></div>
+                <div class="tl-arrow">→</div>
+                <div class="tl-segment active-zone">🌅 Fajar<br><small>mulai boleh niat</small></div>
+                <div class="tl-arrow">→</div>
+                <div class="tl-segment active-zone">☀️ Sebelum Zuhur<br><small>batas akhir niat</small></div>
+                <div class="tl-arrow">→</div>
+                <div class="tl-segment inactive-zone">🌇 Maghrib<br><small>buka puasa</small></div>
+              </div>
+            </div>
+
+            <!-- Rukun B: Menahan diri -->
+            <div class="rukun-item">
+              <div class="rukun-header">
+                <span class="rukun-badge">Rukun b</span>
+                <span class="rukun-title">Menahan Diri</span>
+              </div>
+              <p class="rukun-body">
+                Menahan diri dari segala hal yang membatalkan puasa,
+                dimulai sejak <strong>terbit fajar shadiq</strong> sampai <strong>matahari terbenam (Maghrib)</strong>.
+                Hal yang ditahan antara lain makan, minum, dan segala yang membatalkan puasa.
+              </p>
+            </div>
+
+          </div><!-- /rukun-list -->
+        </div><!-- /slide-1 -->
+
+        <!-- ─────────────────────────────────────
+             SLIDE 3 – Perbedaan Puasa Wajib & Sunah
+        ───────────────────────────────────── -->
+        <div class="slide" id="slide-2">
+          <h2 class="slide-title">Perbedaan Puasa Wajib dan Puasa Sunah</h2>
+
+          <p class="intro-text">
+            Puasa wajib dan puasa sunah memiliki beberapa perbedaan penting dalam
+            tata cara dan ketentuannya. Perhatikan poin-poin berikut:
+          </p>
+
+          <!-- Compare columns -->
+          <div class="compare-grid">
+            <div class="compare-col">
+              <div class="compare-head wajib">🔶 Puasa Wajib</div>
+              <div class="compare-body">
+                <div class="compare-row">Niat <strong>wajib malam hari</strong> sebelum fajar.</div>
+                <div class="compare-row">Tidak boleh dibatalkan tanpa uzur yang sah.</div>
+                <div class="compare-row">Istri <em>tidak perlu</em> izin suami.</div>
+              </div>
+            </div>
+            <div class="compare-col">
+              <div class="compare-head sunnah">🌙 Puasa Sunah</div>
+              <div class="compare-body">
+                <div class="compare-row">Niat <strong>boleh setelah fajar</strong> hingga sebelum Zuhur.</div>
+                <div class="compare-row"><strong>Boleh dibatalkan</strong> meskipun tanpa uzur.</div>
+                <div class="compare-row">Istri <strong>harus izin suami</strong> terlebih dahulu.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Detail diff cards -->
+          <div class="diff-cards">
+
+            <div class="diff-card">
+              <span class="diff-icon">🕐</span>
+              <div class="diff-body">
+                <p class="diff-title">a. Waktu Niat yang Fleksibel</p>
+                <p class="diff-desc">
+                  Berbeda dengan puasa wajib yang mengharuskan niat pada malam hari,
+                  niat puasa sunah boleh dilakukan setelah terbit fajar
+                  asalkan belum melakukan hal yang membatalkan puasa.
+                </p>
+              </div>
+            </div>
+
+            <div class="diff-card">
+              <span class="diff-icon">✋</span>
+              <div class="diff-body">
+                <p class="diff-title">b. Boleh Dibatalkan Tanpa Uzur</p>
+                <p class="diff-desc">
+                  Puasa sunah boleh dibatalkan kapan saja meski tanpa alasan (uzur).
+                  Namun lebih utama untuk diteruskan hingga selesai. Jika dibatalkan,
+                  disunnahkan untuk meng-qadha (mengganti) di hari lain.
+                </p>
+              </div>
+            </div>
+
+            <div class="diff-card">
+              <span class="diff-icon">💑</span>
+              <div class="diff-body">
+                <p class="diff-title">c. Izin Suami bagi Istri</p>
+                <p class="diff-desc">
+                  Seorang istri yang ingin melaksanakan puasa sunah harus
+                  mendapat izin dari suaminya terlebih dahulu. Tanpa izin suami,
+                  puasa sunah istri tidak dianjurkan dilaksanakan.
+                </p>
+              </div>
+            </div>
+
+          </div><!-- /diff-cards -->
+
+          <div class="info-box">
+            <strong>📌 Ringkasan:</strong> Puasa sunah lebih fleksibel dari sisi niat dan
+            pembatalan, namun tetap memerlukan kesungguhan. Istri yang ingin berpuasa sunah
+            sebaiknya meminta izin suami agar ibadahnya sempurna dan penuh berkah.
+          </div>
+
+        </div><!-- /slide-2 -->
+
+      </div><!-- /slides-container -->
+
+      <!-- NAVIGATION -->
+      <div class="nav-bar">
+        <a href="fiqih.html" class="btn btn-home">🏠 Beranda</a>
+
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button class="btn" id="btnPrev" onclick="changeSlide(-1)" disabled>
+            ← Sebelumnya
+          </button>
+          <button class="btn" id="btnNext" onclick="changeSlide(1)">
+            Berikutnya →
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /main-card -->
+  </div><!-- /page-wrapper -->
+
+  <!-- ═══════ JAVASCRIPT ═══════ -->
+  <script>
+    /* ─── SLIDE SYSTEM ─── */
+    let current = 0;
+    const TOTAL = 3;
+
+    function changeSlide(dir) {
+      const slides = document.querySelectorAll('.slide');
+      const dots   = document.querySelectorAll('.dot');
+
+      // exit animation
+      const exitClass = dir === 1 ? 'exit-left' : 'exit-right';
+      slides[current].classList.add(exitClass);
+
+      setTimeout(() => {
+        slides[current].classList.remove('active', exitClass);
+        dots[current].classList.remove('active');
+
+        current = Math.max(0, Math.min(TOTAL - 1, current + dir));
+
+        // enter animation class swap
+        slides[current].style.animationName =
+          dir === 1 ? 'sld-in' : 'sld-in-rev';
+        slides[current].classList.add('active');
+        dots[current].classList.add('active');
+
+        // force reflow to restart animation
+        void slides[current].offsetWidth;
+
+        updateControls();
+        document.querySelector('.main-card')
+          .scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 260);
+    }
+
+    function updateControls() {
+      document.getElementById('btnPrev').disabled = current === 0;
+      document.getElementById('btnNext').disabled = current === TOTAL - 1;
+      document.getElementById('indicatorText').textContent = `${current + 1} / ${TOTAL}`;
+    }
+
+    /* ─── PARTICLES ─── */
+    (function () {
+      const c = document.getElementById('particles');
+      const colors = ['#ffd700','#ffe94d','#ffcc00','#fff8a0','#39ff14'];
+      for (let i = 0; i < 26; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const sz = Math.random() * 5 + 2;
+        Object.assign(p.style, {
+          width:  `${sz}px`, height: `${sz}px`,
+          left:   `${Math.random() * 100}vw`,
+          bottom: `-${sz}px`,
+          background: colors[Math.floor(Math.random() * colors.length)],
+          animationDuration: `${Math.random() * 10 + 9}s`,
+          animationDelay:    `${Math.random() * 13}s`,
+          filter: Math.random() > 0.5 ? 'blur(1px)' : 'none',
+          opacity: 0,
+        });
+        c.appendChild(p);
+      }
+    })();
+
+    /* ─── RIPPLE ─── */
+    const rippleStyle = document.createElement('style');
+    rippleStyle.textContent = '@keyframes rpl { to { transform:scale(1); opacity:0; } }';
+    document.head.appendChild(rippleStyle);
+
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('click', function (e) {
+        if (this.tagName === 'A') return;
+        const rpl  = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const sz   = Math.max(rect.width, rect.height) * 1.6;
+        Object.assign(rpl.style, {
+          position: 'absolute', borderRadius: '50%',
+          width:  `${sz}px`, height: `${sz}px`,
+          left: `${e.clientX - rect.left  - sz / 2}px`,
+          top:  `${e.clientY - rect.top   - sz / 2}px`,
+          background: 'rgba(255,215,0,0.18)',
+          transform: 'scale(0)',
+          animation: 'rpl 0.5s ease-out forwards',
+          pointerEvents: 'none',
+        });
+        this.appendChild(rpl);
+        rpl.addEventListener('animationend', () => rpl.remove());
+      });
+    });
+
+    /* ─── init ─── */
+    updateControls();
+  </script>
+</body>
+</html>
