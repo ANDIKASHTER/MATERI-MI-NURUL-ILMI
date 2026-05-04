@@ -1,513 +1,737 @@
-<!doctype html>
-<html lang="id" class="h-full">
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mari Belajar Bersama - MI Nurul Ilmi</title>
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
-  <script src="/_sdk/element_sdk.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --neon: #39ff14;
-      --neon-dim: #1a8a0a;
-      --bg-dark: #0a0a0f;
-      --bg-card: #111118;
-      --surface: #1a1a24;
-      --text-main: #e0e0e0;
-    }
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAUM – Smart Learning Of Puasa</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #00ff6a;
+    --green-dim: #00cc55;
+    --green-dark: #003d1a;
+    --neon: #39ff14;
+    --glow: 0 0 8px #00ff6a, 0 0 20px #00ff6a, 0 0 40px #00cc55;
+    --glow-soft: 0 0 6px #00ff6a88, 0 0 16px #00cc5555;
+    --glass-bg: rgba(0, 60, 20, 0.35);
+    --glass-border: rgba(0, 255, 106, 0.35);
+  }
 
-    html, body { height: 100%; margin: 0; padding: 0; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: var(--bg-dark);
-      color: var(--text-main);
-      overflow-x: hidden;
-    }
+  html, body {
+    width: 100%; height: 100%;
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+  }
 
-    .font-orbitron { font-family: 'Orbitron', monospace; }
+  /* ── CANVAS STARS ── */
+  #starCanvas {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0; pointer-events: none;
+  }
 
-    /* Laser lines background */
-    .laser-bg {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
+  /* ── BACKGROUND ── */
+  .bg {
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      linear-gradient(rgba(0,0,0,0.72), rgba(0,10,5,0.82)),
+      url('http://getwallpapers.com/wallpaper/full/9/8/8/920984-masjid-wallpaper-2560x1600-for-android-tablet.jpg')
+      center/cover no-repeat;
+  }
 
-    .laser-line {
-      position: absolute;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--neon), transparent);
-      opacity: 0.15;
-      animation: laserMove linear infinite;
-    }
+  /* ── LAYOUT ── */
+  .page {
+    position: relative; z-index: 2;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+  }
 
-    .laser-line:nth-child(1) { top: 10%; width: 80%; left: -20%; animation-duration: 8s; }
-    .laser-line:nth-child(2) { top: 25%; width: 60%; left: 10%; animation-duration: 12s; animation-delay: 2s; }
-    .laser-line:nth-child(3) { top: 45%; width: 90%; left: -30%; animation-duration: 10s; animation-delay: 4s; }
-    .laser-line:nth-child(4) { top: 65%; width: 70%; left: 5%; animation-duration: 14s; animation-delay: 1s; }
-    .laser-line:nth-child(5) { top: 80%; width: 50%; left: 20%; animation-duration: 9s; animation-delay: 3s; }
-    .laser-line:nth-child(6) { top: 92%; width: 85%; left: -10%; animation-duration: 11s; animation-delay: 5s; }
+  /* ── HEADER ── */
+  header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 28px;
+    background: rgba(0,20,10,0.55);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 0 20px rgba(0,255,106,0.1);
+  }
 
-    .laser-v {
-      position: absolute;
-      width: 1px;
-      background: linear-gradient(180deg, transparent, var(--neon), transparent);
-      opacity: 0.08;
-      animation: laserMoveV linear infinite;
-    }
-    .laser-v:nth-child(7) { left: 15%; height: 60%; top: -20%; animation-duration: 13s; }
-    .laser-v:nth-child(8) { left: 50%; height: 70%; top: -30%; animation-duration: 16s; animation-delay: 3s; }
-    .laser-v:nth-child(9) { left: 80%; height: 50%; top: -10%; animation-duration: 11s; animation-delay: 6s; }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+  }
 
-    @keyframes laserMove {
-      0% { transform: translateX(-100%); opacity: 0; }
-      10% { opacity: 0.15; }
-      90% { opacity: 0.15; }
-      100% { transform: translateX(200%); opacity: 0; }
-    }
-    @keyframes laserMoveV {
-      0% { transform: translateY(-100%); opacity: 0; }
-      10% { opacity: 0.08; }
-      90% { opacity: 0.08; }
-      100% { transform: translateY(200%); opacity: 0; }
-    }
+  .brand img {
+    height: 50px; width: 50px;
+    object-fit: contain; border-radius: 6px;
+    filter: drop-shadow(0 0 6px #00ff6a88);
+  }
 
-    /* Particles */
-    .particle {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: var(--neon);
-      border-radius: 50%;
-      opacity: 0;
-      animation: particleFloat linear infinite;
-    }
-    @keyframes particleFloat {
-      0% { opacity: 0; transform: translateY(0) scale(0); }
-      20% { opacity: 0.6; transform: scale(1); }
-      80% { opacity: 0.3; }
-      100% { opacity: 0; transform: translateY(-200px) scale(0); }
-    }
+  .brand-text {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(0.65rem, 2vw, 0.85rem);
+    font-weight: 700;
+    color: var(--green);
+    text-shadow: var(--glow-soft);
+    letter-spacing: 2px;
+    line-height: 1.3;
+  }
 
-    /* Neon glow text */
-    .neon-glow {
-      text-shadow:
-        0 0 10px var(--neon),
-        0 0 30px var(--neon),
-        0 0 60px rgba(57, 255, 20, 0.3);
-    }
+  /* ── HERO ── */
+  .hero {
+    flex: 1;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    padding: 60px 20px 40px;
+    gap: 18px;
+  }
 
-    .neon-glow-subtle {
-      text-shadow:
-        0 0 8px rgba(57, 255, 20, 0.5),
-        0 0 20px rgba(57, 255, 20, 0.2);
-    }
+  .hero-subtitle-top {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(0.7rem, 2vw, 0.9rem);
+    color: #aaffcc;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.3s forwards;
+  }
 
-    /* Neon button */
-    .neon-btn {
-      position: relative;
-      border: 2px solid var(--neon);
-      background: transparent;
-      color: var(--neon);
-      padding: 14px 36px;
-      border-radius: 12px;
-      font-family: 'Orbitron', monospace;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      overflow: hidden;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .neon-btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--neon);
-      opacity: 0;
-      transition: opacity 0.3s;
-      border-radius: 10px;
-    }
-    .neon-btn:hover::before { opacity: 0.12; }
-    .neon-btn:hover {
-      box-shadow: 0 0 20px rgba(57, 255, 20, 0.4), 0 0 40px rgba(57, 255, 20, 0.15);
-      transform: scale(1.05);
-    }
-    .neon-btn:active { transform: scale(0.95); }
-    .neon-btn span { position: relative; z-index: 1; }
+  .hero-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.8rem, 6vw, 4rem);
+    font-weight: 900;
+    color: var(--green);
+    text-shadow: var(--glow);
+    line-height: 1.15;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.5s forwards, glowPulse 3s 1.4s infinite;
+    max-width: 750px;
+  }
 
-    /* Modal */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(8px);
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-      padding: 20px;
-    }
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-    .modal-box {
-      background: var(--bg-card);
-      border: 1px solid rgba(57, 255, 20, 0.25);
-      border-radius: 20px;
-      padding: 32px;
-      max-width: 480px;
-      width: 100%;
-      transform: scale(0.85);
-      transition: transform 0.3s ease;
-      box-shadow: 0 0 40px rgba(57, 255, 20, 0.08);
-      max-height: 85%;
-      overflow-y: auto;
-    }
-    .modal-overlay.active .modal-box { transform: scale(1); }
+  .hero-subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+    color: #ccffdd;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
 
-    .modal-close {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      border: 1px solid rgba(57, 255, 20, 0.3);
-      background: transparent;
-      color: var(--neon);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-    }
-    .modal-close:hover {
-      background: rgba(57, 255, 20, 0.15);
-      box-shadow: 0 0 12px rgba(57, 255, 20, 0.3);
-    }
+  .hero-divider {
+    width: 200px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+    box-shadow: 0 0 8px var(--green);
+    opacity: 0;
+    animation: fadeUp 0.6s 1s forwards;
+  }
 
-    /* Person button in modal */
-    .person-btn {
-      width: 100%;
-      padding: 16px 20px;
-      background: var(--surface);
-      border: 1px solid rgba(57, 255, 20, 0.15);
-      border-radius: 12px;
-      color: var(--text-main);
-      font-family: 'Poppins', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-      text-align: left;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .person-btn:hover {
-      border-color: var(--neon);
-      background: rgba(57, 255, 20, 0.06);
-      box-shadow: 0 0 15px rgba(57, 255, 20, 0.12);
-      transform: translateX(6px);
-    }
-    .person-btn:active { transform: scale(0.97); }
+  .btn-group {
+    display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.1s forwards;
+    margin-top: 10px;
+  }
 
-    /* Class grid button */
-    .class-btn {
-      padding: 20px;
-      background: var(--surface);
-      border: 1px solid rgba(57, 255, 20, 0.15);
-      border-radius: 14px;
-      color: var(--neon);
-      font-family: 'Orbitron', monospace;
-      font-weight: 700;
-      font-size: 1.05rem;
-      cursor: pointer;
-      transition: all 0.3s;
-      text-align: center;
-    }
-    .class-btn:hover {
-      border-color: var(--neon);
-      background: rgba(57, 255, 20, 0.08);
-      box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
-      transform: translateY(-4px);
-    }
-    .class-btn:active { transform: scale(0.94); }
+  .btn-neon {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(0.75rem, 2vw, 0.9rem);
+    font-weight: 700;
+    letter-spacing: 3px;
+    padding: 14px 36px;
+    color: var(--green);
+    background: transparent;
+    border: 2px solid var(--green);
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0,255,106,0.3), inset 0 0 10px rgba(0,255,106,0.05);
+    text-transform: uppercase;
+  }
 
-    /* Detail card */
-    .detail-row {
-      display: flex;
-      gap: 8px;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(57, 255, 20, 0.07);
-    }
-    .detail-row:last-child { border-bottom: none; }
-    .detail-label {
-      color: var(--neon);
-      font-weight: 600;
-      min-width: 80px;
-      font-size: 0.9rem;
-    }
-    .detail-value {
-      color: var(--text-main);
-      font-size: 0.9rem;
-    }
+  .btn-neon::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent 40%, rgba(0,255,106,0.15));
+    opacity: 0; transition: opacity 0.3s;
+  }
 
-    /* Logo hover */
-    .logo-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: default;
-      transition: all 0.3s;
-    }
-    .logo-wrap:hover {
-      filter: drop-shadow(0 0 8px rgba(57, 255, 20, 0.5));
-      transform: scale(1.04);
-    }
-    .logo-wrap img {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid rgba(57, 255, 20, 0.3);
-    }
+  .btn-neon:hover {
+    color: #000;
+    background: var(--green);
+    box-shadow: var(--glow), inset 0 0 20px rgba(0,255,106,0.3);
+    transform: scale(1.06);
+  }
 
-    /* Fade in animation */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeUp 0.8s ease forwards;
-    }
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .fade-delay-1 { animation-delay: 0.2s; }
-    .fade-delay-2 { animation-delay: 0.4s; }
-    .fade-delay-3 { animation-delay: 0.6s; }
+  .btn-neon:hover::before { opacity: 1; }
+  .btn-neon:active { transform: scale(0.97); }
 
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg-dark); }
-    ::-webkit-scrollbar-thumb { background: var(--neon-dim); border-radius: 3px; }
-  </style>
-  <style>body { box-sizing: border-box; }</style>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
- </head>
- <body class="h-full"><!-- Laser background -->
-  <div class="laser-bg" aria-hidden="true">
-   <div class="laser-line"></div>
-   <div class="laser-line"></div>
-   <div class="laser-line"></div>
-   <div class="laser-line"></div>
-   <div class="laser-line"></div>
-   <div class="laser-line"></div>
-   <div class="laser-v"></div>
-   <div class="laser-v"></div>
-   <div class="laser-v"></div>
-   <div id="particles"></div>
+  /* ── FOOTER ── */
+  footer {
+    padding: 18px;
+    text-align: center;
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(0.6rem, 1.8vw, 0.8rem);
+    letter-spacing: 3px;
+    color: var(--green-dim);
+    text-shadow: var(--glow-soft);
+    border-top: 1px solid rgba(0,255,106,0.15);
+    background: rgba(0,15,8,0.5);
+  }
+
+  /* ── OVERLAY / POPUP BASE ── */
+  .overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(4px);
+    justify-content: center; align-items: center;
+    padding: 20px;
+  }
+
+  .overlay.active {
+    display: flex;
+    animation: fadeOverlay 0.25s ease;
+  }
+
+  @keyframes fadeOverlay { from { opacity: 0; } to { opacity: 1; } }
+
+  .popup {
+    background: rgba(0, 40, 18, 0.6);
+    backdrop-filter: blur(18px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: 0 0 40px rgba(0,255,106,0.2), inset 0 0 40px rgba(0,255,106,0.04);
+    padding: 36px 30px;
+    width: 100%; max-width: 480px;
+    position: relative;
+    animation: popIn 0.35s cubic-bezier(.34,1.56,.64,1);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .popup-close {
+    position: absolute; top: 14px; right: 16px;
+    background: none; border: none;
+    color: var(--green); font-size: 1.5rem;
+    cursor: pointer; line-height: 1;
+    transition: all 0.2s;
+    font-weight: 700;
+  }
+
+  .popup-close:hover { color: #fff; text-shadow: 0 0 10px #fff; transform: rotate(90deg); }
+
+  /* ── PROFILE POPUP ── */
+  .profile-header {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 14px; margin-bottom: 22px;
+  }
+
+  .profile-photo {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--green);
+    box-shadow: 0 0 20px rgba(0,255,106,0.5);
+  }
+
+  .profile-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--green);
+    text-shadow: var(--glow-soft);
+    text-align: center;
+  }
+
+  .profile-info { width: 100%; }
+
+  .info-row {
+    display: flex; gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(0,255,106,0.12);
+    font-size: 0.82rem;
+    color: #cce8d5;
+    line-height: 1.5;
+  }
+
+  .info-label {
+    font-weight: 600; color: var(--green);
+    min-width: 90px; font-size: 0.78rem;
+  }
+
+  /* ── SUBJECT POPUP ── */
+  .popup-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    color: var(--green);
+    text-shadow: var(--glow-soft);
+    text-align: center;
+    margin-bottom: 28px;
+    letter-spacing: 2px;
+  }
+
+  .subject-popup {
+    max-width: 680px;
+    overflow: visible;
+  }
+
+  .carousel-wrap {
+    position: relative;
+    padding: 30px 0 20px;
+    overflow: hidden;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.45s cubic-bezier(.25,.8,.25,1);
+    will-change: transform;
+    align-items: center;
+    padding: 0 20px;
+  }
+
+  .subject-card {
+    flex: 0 0 160px;
+    min-height: 180px;
+    background: rgba(0,50,20,0.5);
+    border: 1px solid rgba(0,255,106,0.25);
+    border-radius: 12px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(.25,.8,.25,1);
+    padding: 20px 14px;
+    user-select: none;
+    box-shadow: 0 0 10px rgba(0,255,106,0.1);
+  }
+
+  .subject-card.active {
+    transform: scale(1.18);
+    border-color: var(--green);
+    box-shadow: var(--glow), 0 0 40px rgba(0,255,106,0.25);
+    background: rgba(0,80,30,0.65);
+  }
+
+  .subject-card:hover:not(.active) {
+    transform: scale(1.06);
+    border-color: rgba(0,255,106,0.6);
+  }
+
+  .subject-card .icon {
+    font-size: 2.2rem;
+    filter: drop-shadow(0 0 6px rgba(0,255,106,0.6));
+  }
+
+  .subject-card .label {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--green);
+    text-align: center;
+    letter-spacing: 1.5px;
+    text-shadow: var(--glow-soft);
+  }
+
+  .carousel-nav {
+    display: flex; justify-content: center; gap: 16px;
+    margin-top: 18px;
+  }
+
+  .nav-btn {
+    background: rgba(0,255,106,0.1);
+    border: 1px solid var(--green);
+    color: var(--green);
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.25s;
+    box-shadow: 0 0 8px rgba(0,255,106,0.2);
+  }
+
+  .nav-btn:hover {
+    background: var(--green);
+    color: #000;
+    box-shadow: var(--glow);
+  }
+
+  .carousel-dots {
+    display: flex; justify-content: center; gap: 8px; margin-top: 14px;
+  }
+
+  .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: rgba(0,255,106,0.3);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .dot.active {
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+    transform: scale(1.3);
+  }
+
+  .select-btn {
+    display: block;
+    margin: 20px auto 0;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    padding: 12px 32px;
+    letter-spacing: 2px;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { text-shadow: 0 0 8px #00ff6a, 0 0 20px #00ff6a, 0 0 40px #00cc55; }
+    50%       { text-shadow: 0 0 16px #00ff6a, 0 0 40px #00ff6a, 0 0 80px #00cc55; }
+  }
+
+  /* scrollbar */
+  .popup::-webkit-scrollbar { width: 4px; }
+  .popup::-webkit-scrollbar-track { background: transparent; }
+  .popup::-webkit-scrollbar-thumb { background: var(--green-dim); border-radius: 4px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    header { padding: 10px 14px; }
+    .brand img { height: 38px; width: 38px; }
+    .popup { padding: 28px 18px; }
+    .subject-card { flex: 0 0 130px; min-height: 150px; }
+    .subject-card .icon { font-size: 1.8rem; }
+  }
+
+  /* ── DECORATION LINES ── */
+  .hero-deco {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0.12;
+  }
+
+  .deco-v {
+    width: 1px; height: 120px;
+    background: linear-gradient(var(--green), transparent);
+    top: 0;
+  }
+
+  .deco-v.left  { left: 60px; }
+  .deco-v.right { right: 60px; }
+</style>
+</head>
+<body>
+
+<!-- BG -->
+<div class="bg"></div>
+<canvas id="starCanvas"></canvas>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjuACIpHc1DQab6ztieaMc-oOKfeabD-MO149whMBb_wKdq5-GA_Ma0R0yYZggAmokj5nCw2YRo22wmvaJFtCI3uaGyIQY-crNOEbBLa_eTnQqFNO60tMepSFIRyDip0-mjgvrQCLWjRp9pdaH8QJm6r4piCeSHvjHXsUHBwaW5pRqO2dJUN78aysrs0yDv/s2404/LOGO%20UIN%20SUNAN%20KUDUS.png" alt="Logo UIN Sunan Kudus">
+      <div class="brand-text">UIN SUNAN<br>KUDUS</div>
+    </div>
+    <div class="brand" style="flex-direction: row-reverse;">
+      <img src="https://tse1.mm.bing.net/th/id/OIP.4GfA86ymyU6d9ohE51X1CgAAAA?pid=Api&P=0&h=180" alt="Logo MI Nurul Ilmi">
+      <div class="brand-text" style="text-align:right;">MI NURUL<br>ILMI</div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main class="hero">
+    <div class="hero-deco deco-v left"></div>
+    <div class="hero-deco deco-v right"></div>
+
+    <p class="hero-subtitle-top">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</p>
+    <h1 class="hero-title">SAUM: Smart Learning<br>Of Puasa</h1>
+    <p class="hero-subtitle">e-Fasting Academy</p>
+    <div class="hero-divider"></div>
+
+    <div class="btn-group">
+      <button class="btn-neon" onclick="openPerkenalan()">⊕ Perkenalan</button>
+      <button class="btn-neon" onclick="openMulai()">▶ Mulai</button>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>✦ Control Your Hunger, Control Your Life ✦</footer>
+</div>
+
+<!-- ══ POPUP: PERKENALAN ══ -->
+<div class="overlay" id="overlayPerkenalan" onclick="closePopup('overlayPerkenalan', event)">
+  <div class="popup">
+    <button class="popup-close" onclick="closeById('overlayPerkenalan')">✕</button>
+    <div class="profile-header">
+      <img class="profile-photo" src="profil.jpg" alt="Foto Profil"
+           onerror="this.src='https://ui-avatars.com/api/?name=ABS&background=003d1a&color=00ff6a&size=200&font-size=0.45&bold=true'">
+      <div class="profile-name">Andika Bayu Saputra</div>
+    </div>
+    <div class="profile-info">
+      <div class="info-row"><span class="info-label">📍 Alamat</span><span>Bategede, Nalumsari, Jepara</span></div>
+      <div class="info-row">
+        <span class="info-label">🎓 Pendidikan</span>
+        <span>MI Nurul Ilmi<br>MTs NU TBS Kudus<br>MA NU TBS Kudus</span>
+      </div>
+      <div class="info-row"><span class="info-label">🎯 Hobi</span><span>Mencari Hal-hal Baru</span></div>
+      <div class="info-row" style="border:none;">
+        <span class="info-label">💬 Motto</span>
+        <span style="font-style:italic;color:#aaffcc;">"Apapun Yang Terjadi, Teruslah Bernafas."</span>
+      </div>
+    </div>
   </div>
-  <div class="h-full w-full overflow-auto" style="position: relative; z-index: 1;"><!-- HEADER -->
-   <header class="w-full px-4 py-4 sm:px-8">
-    <div class="flex flex-wrap items-center justify-center sm:justify-end gap-4 sm:gap-8">
-     <div class="logo-wrap"><img src="https://tse2.mm.bing.net/th/id/OIP.V800Wvfl-PrG6jZrhcKrLgHaHF?pid=Api&amp;P=0&amp;h=180" alt="Logo MI Nurul Ilmi" loading="lazy" onerror="this.style.background='#1a8a0a'; this.alt='Logo unavailable';"> <span class="font-orbitron text-sm sm:text-base font-bold neon-glow-subtle" style="color: var(--neon);">MI NURUL ILMI</span>
-     </div>
-     <div class="logo-wrap"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhKrfuU49wIAhZYKt06jMJ6vSIlXf1sXX9iY0GQvJLNJvx59xj7Uxu_7s8zzxBusFVveAOdwx2EnqGba3TF6TuKbeqLvSlM84vVkONV0O4-7YTMaf9BZDfB8dZ-HFO4sREQLqVaYc5UQ_pt0LFNT6cUHzvtIClVoDa66F6bIJoPxox-w4xDcR3zLt0KrOWH/s3724/LOGO%20UIN%20SUNAN%20KUDUS.jpg" alt="Logo UIN Sunan Kudus" loading="lazy" onerror="this.style.background='#1a8a0a'; this.alt='Logo unavailable';"> <span class="font-orbitron text-sm sm:text-base font-bold neon-glow-subtle" style="color: var(--neon);">UIN SUNAN KUDUS</span>
-     </div>
+</div>
+
+<!-- ══ POPUP: MULAI ══ -->
+<div class="overlay" id="overlayMulai" onclick="closePopup('overlayMulai', event)">
+  <div class="popup subject-popup">
+    <button class="popup-close" onclick="closeById('overlayMulai')">✕</button>
+    <div class="popup-title">Choose Your Subject</div>
+
+    <div class="carousel-wrap">
+      <div class="carousel-track" id="carouselTrack">
+        <div class="subject-card" data-url="fiqih.html" onclick="goSubject(this)">
+          <span class="icon">📖</span>
+          <span class="label">Fiqih</span>
+        </div>
+        <div class="subject-card" data-url="alquran.html" onclick="goSubject(this)">
+          <span class="icon">🕌</span>
+          <span class="label">Al-Qur'an Hadits</span>
+        </div>
+        <div class="subject-card" data-url="akidah.html" onclick="goSubject(this)">
+          <span class="icon">☪️</span>
+          <span class="label">Akidah Akhlak</span>
+        </div>
+        <div class="subject-card" data-url="ski.html" onclick="goSubject(this)">
+          <span class="icon">🏛️</span>
+          <span class="label">SKI</span>
+        </div>
+      </div>
     </div>
-   </header><!-- HERO -->
-   <main class="flex flex-col items-center justify-center px-4 py-16 sm:py-24 text-center">
-    <h1 id="heroTitle" class="font-orbitron text-3xl sm:text-5xl md:text-6xl font-black neon-glow fade-up" style="color: var(--neon); line-height: 1.2;">MARI BELAJAR BERSAMA</h1>
-    <p id="heroSubtitle" class="mt-4 text-lg sm:text-xl md:text-2xl font-light fade-up fade-delay-1" style="color: rgba(224,224,224,0.75);">Platform Digital MI NURUL ILMI</p><!-- Buttons -->
-    <div class="flex flex-col sm:flex-row gap-4 mt-10 fade-up fade-delay-2"><button class="neon-btn" onclick="openModal('perkenalan')"> <span><i data-lucide="users" style="display:inline-block;vertical-align:middle;width:20px;height:20px;margin-right:8px;"></i>Perkenalan</span> </button> <button class="neon-btn" onclick="openModal('belajar')"> <span><i data-lucide="book-open" style="display:inline-block;vertical-align:middle;width:20px;height:20px;margin-right:8px;"></i>Mulai Belajar</span> </button>
-    </div><!-- Decorative tagline -->
-    <p class="mt-16 text-xs sm:text-sm fade-up fade-delay-3" style="color: rgba(57,255,20,0.3); letter-spacing: 4px; font-family: 'Orbitron', monospace;">✦ BELAJAR · BERKARYA · BERPRESTASI ✦</p>
-   </main>
-  </div><!-- MODAL: Perkenalan -->
-  <div id="modalPerkenalan" class="modal-overlay" onclick="closeOnOutside(event, 'modalPerkenalan')">
-   <div class="modal-box" onclick="event.stopPropagation()">
-    <div class="flex items-center justify-between mb-6">
-     <h2 class="font-orbitron text-lg font-bold" style="color: var(--neon);">Perkenalan Tim</h2><button class="modal-close" onclick="closeModal('modalPerkenalan')" aria-label="Close"> <i data-lucide="x" style="width:18px;height:18px;"></i> </button>
+
+    <div class="carousel-dots" id="carouselDots"></div>
+
+    <div class="carousel-nav">
+      <button class="nav-btn" onclick="moveCarousel(-1)">◀</button>
+      <button class="nav-btn" onclick="moveCarousel(1)">▶</button>
     </div>
-    <div class="flex flex-col gap-3"><button class="person-btn" onclick="showPerson('andika')"> <i data-lucide="user" style="width:22px;height:22px;color:var(--neon);flex-shrink:0;"></i> Mas Andika </button> <button class="person-btn" onclick="showPerson('dai')"> <i data-lucide="user" style="width:22px;height:22px;color:var(--neon);flex-shrink:0;"></i> Mas Dai </button> <button class="person-btn" onclick="showPerson('anam')"> <i data-lucide="user" style="width:22px;height:22px;color:var(--neon);flex-shrink:0;"></i> Mas Anam </button>
-    </div>
-   </div>
-  </div><!-- MODAL: Person Detail -->
-  <div id="modalPerson" class="modal-overlay" onclick="closeOnOutside(event, 'modalPerson')">
-   <div class="modal-box" onclick="event.stopPropagation()">
-    <div class="flex items-center justify-between mb-6">
-     <h2 id="personName" class="font-orbitron text-lg font-bold" style="color: var(--neon);"></h2><button class="modal-close" onclick="closeModal('modalPerson')" aria-label="Close"> <i data-lucide="x" style="width:18px;height:18px;"></i> </button>
-    </div>
-    <div id="personDetails"></div>
-   </div>
-  </div><!-- MODAL: Mulai Belajar -->
-  <div id="modalBelajar" class="modal-overlay" onclick="closeOnOutside(event, 'modalBelajar')">
-   <div class="modal-box" onclick="event.stopPropagation()">
-    <div class="flex items-center justify-between mb-6">
-     <h2 class="font-orbitron text-lg font-bold" style="color: var(--neon);">Pilih Kelas</h2><button class="modal-close" onclick="closeModal('modalBelajar')" aria-label="Close"> <i data-lucide="x" style="width:18px;height:18px;"></i> </button>
-    </div>
-    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3"><button class="class-btn" onclick="window.open('kelas1.html','_blank')">Kelas 1</button> <button class="class-btn" onclick="window.open('kelas1.html','_blank')">Kelas 2</button> <button class="class-btn" onclick="window.open('kelas1.html','_blank')">Kelas 3</button> <button class="class-btn" onclick="window.open('kelas4.html','_blank')">Kelas 4</button> <button class="class-btn" onclick="window.open('kelas1.html','_blank')">Kelas 5</button> <button class="class-btn" onclick="window.open('kelas1.html','_blank')">Kelas 6</button>
-    </div>
-   </div>
+
+    <button class="btn-neon select-btn" id="selectBtn" onclick="confirmSubject()">Pilih Subject</button>
   </div>
-  <script>
-    // Person data
-    const people = {
-      andika: {
-        name: 'Mas Andika',
-        details: [
-          ['Nama', 'Andika Bayu Saputra'],
-          ['Alamat', 'Bategede Nalumsari Jepara'],
-          ['Riwayat', 'MI Nurul Ilmi, MTs NU TBS Kudus, MA NU TBS Kudus'],
-          ['Hobi', 'Mencari pengetahuan baru']
-        ]
-      },
-      dai: {
-        name: 'Mas Dai',
-        details: [
-          ['Nama', 'Achmad Dai Awalludin Syah'],
-          ['Alamat', 'Tanjung Karang Jati Kudus'],
-          ['Riwayat', 'MI NU Thalibin, MTs NU TBS Kudus, MA NU WHS, Ponpes Al-Anwar Sarang,Ponpes Sirajul Hanan'],
-          ['Hobi', 'BELA DIRI']
-        ]
-      },
-      anam: {
-        name: 'Mas Anam',
-        details: [
-          ['Nama', 'Khoirul Anam'],
-          ['Alamat', 'Getassrabi Gebog Kudus'],
-          ['Riwayat', 'SD # Getassrabi, MTsN 1 Kudus, MA NU TBS Kudus'],
-          ['Hobi', 'Menari']
-        ]
+</div>
+
+<script>
+/* ── STARS ── */
+(function(){
+  const canvas = document.getElementById('starCanvas');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+
+  function resize(){
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    initStars();
+  }
+
+  function initStars(){
+    stars = [];
+    const n = Math.floor((canvas.width * canvas.height) / 4500);
+    for(let i = 0; i < n; i++){
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.5 + 0.3,
+        alpha: Math.random(),
+        speed: Math.random() * 0.008 + 0.003,
+        dir: Math.random() > 0.5 ? 1 : -1,
+        green: Math.random() > 0.65
+      });
+    }
+  }
+
+  function draw(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(s => {
+      s.alpha += s.speed * s.dir;
+      if(s.alpha >= 1 || s.alpha <= 0){ s.dir *= -1; s.alpha = Math.max(0, Math.min(1, s.alpha)); }
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = s.green
+        ? `rgba(0,255,106,${(s.alpha * 0.7).toFixed(2)})`
+        : `rgba(255,255,255,${(s.alpha * 0.55).toFixed(2)})`;
+      ctx.fill();
+      if(s.green && s.alpha > 0.7){
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = '#00ff6a';
+        ctx.fill();
+        ctx.shadowBlur = 0;
       }
-    };
+    });
+    requestAnimationFrame(draw);
+  }
 
-    function openModal(type) {
-      if (type === 'perkenalan') document.getElementById('modalPerkenalan').classList.add('active');
-      else if (type === 'belajar') document.getElementById('modalBelajar').classList.add('active');
-    }
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+})();
 
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('active');
-    }
+/* ── AUDIO (Web Audio API) ── */
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
 
-    function closeOnOutside(e, id) {
-      if (e.target === document.getElementById(id)) closeModal(id);
-    }
+function getAudioCtx(){
+  if(!audioCtx) audioCtx = new AudioCtx();
+  return audioCtx;
+}
 
-    function showPerson(key) {
-      const p = people[key];
-      document.getElementById('personName').textContent = p.name;
-      let html = '';
-      p.details.forEach(([label, value]) => {
-        html += `<div class="detail-row"><span class="detail-label">${label}</span><span class="detail-value">${value}</span></div>`;
-      });
-      document.getElementById('personDetails').innerHTML = html;
-      document.getElementById('modalPerson').classList.add('active');
-    }
+function playTick(){
+  try {
+    const ac = getAudioCtx();
+    const o = ac.createOscillator();
+    const g = ac.createGain();
+    o.connect(g); g.connect(ac.destination);
+    o.type = 'sine'; o.frequency.value = 880;
+    g.gain.setValueAtTime(0.12, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.18);
+    o.start(); o.stop(ac.currentTime + 0.18);
+  } catch(e){}
+}
 
-    // Generate particles
-    const particleContainer = document.getElementById('particles');
-    for (let i = 0; i < 20; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.style.left = Math.random() * 100 + '%';
-      p.style.top = Math.random() * 100 + '%';
-      p.style.animationDuration = (4 + Math.random() * 6) + 's';
-      p.style.animationDelay = (Math.random() * 8) + 's';
-      particleContainer.appendChild(p);
-    }
+function playSelect(){
+  try {
+    const ac = getAudioCtx();
+    [0, 0.12, 0.24].forEach((t, i) => {
+      const o = ac.createOscillator();
+      const g = ac.createGain();
+      o.connect(g); g.connect(ac.destination);
+      o.type = 'triangle';
+      o.frequency.value = [440, 550, 660][i];
+      g.gain.setValueAtTime(0.1, ac.currentTime + t);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + t + 0.2);
+      o.start(ac.currentTime + t);
+      o.stop(ac.currentTime + t + 0.2);
+    });
+  } catch(e){}
+}
 
-    // Element SDK
-    const defaultConfig = {
-      hero_title: 'MARI BELAJAR BERSAMA',
-      hero_subtitle: 'Platform Digital MI NURUL ILMI',
-      background_color: '#0a0a0f',
-      surface_color: '#111118',
-      text_color: '#e0e0e0',
-      primary_action_color: '#39ff14',
-      secondary_action_color: '#1a8a0a',
-      font_family: 'Poppins',
-      font_size: 16
-    };
+/* ── POPUP ── */
+function openPerkenalan(){
+  document.getElementById('overlayPerkenalan').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  playTick();
+}
 
-    async function onConfigChange(config) {
-      const title = config.hero_title || defaultConfig.hero_title;
-      const subtitle = config.hero_subtitle || defaultConfig.hero_subtitle;
-      const bg = config.background_color || defaultConfig.background_color;
-      const surface = config.surface_color || defaultConfig.surface_color;
-      const text = config.text_color || defaultConfig.text_color;
-      const primary = config.primary_action_color || defaultConfig.primary_action_color;
-      const secondary = config.secondary_action_color || defaultConfig.secondary_action_color;
-      const font = config.font_family || defaultConfig.font_family;
-      const size = config.font_size || defaultConfig.font_size;
+function openMulai(){
+  document.getElementById('overlayMulai').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  renderDots();
+  updateCarousel(false);
+  playTick();
+}
 
-      document.getElementById('heroTitle').textContent = title;
-      document.getElementById('heroSubtitle').textContent = subtitle;
+function closeById(id){
+  document.getElementById(id).classList.remove('active');
+  document.body.style.overflow = '';
+}
 
-      document.documentElement.style.setProperty('--bg-dark', bg);
-      document.documentElement.style.setProperty('--bg-card', surface);
-      document.documentElement.style.setProperty('--text-main', text);
-      document.documentElement.style.setProperty('--neon', primary);
-      document.documentElement.style.setProperty('--neon-dim', secondary);
+function closePopup(id, e){
+  if(e.target === document.getElementById(id)) closeById(id);
+}
 
-      document.body.style.backgroundColor = bg;
-      document.body.style.color = text;
-      document.body.style.fontFamily = `${font}, Poppins, sans-serif`;
-      document.body.style.fontSize = size + 'px';
+/* ── CAROUSEL ── */
+let currentIdx = 0;
+const TOTAL = 4;
 
-      document.querySelectorAll('.font-orbitron').forEach(el => {
-        el.style.fontFamily = `Orbitron, ${font}, monospace`;
-      });
+function getCards(){
+  return document.querySelectorAll('.subject-card');
+}
 
-      // Update neon-colored elements
-      document.querySelectorAll('.neon-glow, .neon-glow-subtle').forEach(el => {
-        el.style.color = primary;
-      });
-      document.querySelectorAll('.neon-btn').forEach(el => {
-        el.style.borderColor = primary;
-        el.style.color = primary;
-      });
-    }
+function updateCarousel(sound = true){
+  const track = document.getElementById('carouselTrack');
+  const cards = getCards();
+  const cardWidth = cards[0].offsetWidth + 20; // gap=20
 
-    if (window.elementSdk) {
-      window.elementSdk.init({
-        defaultConfig,
-        onConfigChange,
-        mapToCapabilities: (config) => ({
-          recolorables: [
-            { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
-            { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
-            { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
-            { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
-            { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
-          ],
-          borderables: [],
-          fontEditable: {
-            get: () => config.font_family || defaultConfig.font_family,
-            set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
-          },
-          fontSizeable: {
-            get: () => config.font_size || defaultConfig.font_size,
-            set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
-          }
-        }),
-        mapToEditPanelValues: (config) => new Map([
-          ['hero_title', config.hero_title || defaultConfig.hero_title],
-          ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle]
-        ])
-      });
-    }
+  // Center active card
+  const wrapW = track.parentElement.offsetWidth;
+  const offset = (wrapW / 2) - (currentIdx * cardWidth) - (cardWidth / 2);
+  track.style.transform = `translateX(${offset}px)`;
 
-    // Init Lucide icons
-    lucide.createIcons();
-  </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ef2f8c82734e793',t:'MTc3NjY3NTc2NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+  cards.forEach((c, i) => {
+    c.classList.toggle('active', i === currentIdx);
+  });
+
+  // dots
+  document.querySelectorAll('.dot').forEach((d, i) => {
+    d.classList.toggle('active', i === currentIdx);
+  });
+
+  if(sound) playTick();
+}
+
+function renderDots(){
+  const cont = document.getElementById('carouselDots');
+  cont.innerHTML = '';
+  for(let i = 0; i < TOTAL; i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === currentIdx ? ' active' : '');
+    d.onclick = () => { currentIdx = i; updateCarousel(); };
+    cont.appendChild(d);
+  }
+}
+
+function moveCarousel(dir){
+  currentIdx = (currentIdx + dir + TOTAL) % TOTAL;
+  updateCarousel();
+}
+
+function goSubject(card){
+  const idx = Array.from(getCards()).indexOf(card);
+  if(idx !== currentIdx){
+    currentIdx = idx;
+    updateCarousel();
+    return;
+  }
+  confirmSubject();
+}
+
+function confirmSubject(){
+  const cards = getCards();
+  const card  = cards[currentIdx];
+  const url   = card.getAttribute('data-url');
+  playSelect();
+  setTimeout(() => {
+    window.location.href = url;
+  }, 400);
+}
+
+/* Touch swipe for carousel */
+let touchStartX = 0;
+document.getElementById('carouselTrack').addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+}, {passive: true});
+document.getElementById('carouselTrack').addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if(Math.abs(dx) > 40) moveCarousel(dx < 0 ? 1 : -1);
+});
+
+window.addEventListener('resize', () => updateCarousel(false));
+</script>
+</body>
 </html>
