@@ -6,6 +6,9 @@
   <title>Cerdas Cermat – MI Nurul Ilmi</title>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
+    /* ═══════════════════════════════
+       CSS VARIABLES & RESET
+    ═══════════════════════════════ */
     :root {
       --neon: #39ff14;
       --neon-glow: rgba(57,255,20,0.65);
@@ -19,6 +22,9 @@
       --wrong-glow: rgba(255,69,69,0.5);
       --gold: #ffd700;
       --gold-glow: rgba(255,215,0,0.5);
+      --yellow: #ffdd00;
+      --yellow-glow: rgba(255,221,0,0.6);
+      --cd-color: var(--neon); /* countdown color — changes dynamically */
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -76,11 +82,11 @@
     .overlay.show { opacity: 1; pointer-events: all; }
 
     .modal {
-      background: rgba(5,18,5,0.88);
+      background: rgba(5,18,5,0.92);
       border: 1.5px solid var(--glass-border);
       border-radius: 24px;
       padding: 40px 36px;
-      max-width: 480px; width: 100%;
+      max-width: 500px; width: 100%;
       text-align: center;
       box-shadow: 0 0 40px var(--neon-dim), 0 0 80px rgba(57,255,20,0.07);
       transform: scale(0.88);
@@ -98,35 +104,56 @@
     }
     .modal p { font-size: 0.9rem; color: var(--sub); margin-bottom: 22px; line-height: 1.6; }
 
-    /* group name input */
-    .modal input[type="text"] {
-      width: 100%; padding: 13px 16px;
-      background: rgba(0,0,0,0.5);
-      border: 1.5px solid var(--glass-border);
-      border-radius: 12px; color: var(--text);
-      font-family: 'Poppins', sans-serif; font-size: 1rem;
-      outline: none; text-align: center;
-      margin-bottom: 18px;
-      transition: border-color 0.25s, box-shadow 0.25s;
-    }
-    .modal input[type="text"]:focus {
-      border-color: var(--neon);
-      box-shadow: 0 0 16px var(--neon-dim);
-    }
-    .modal input[type="text"]::placeholder { color: rgba(180,255,180,0.3); }
-
     /* correct modal */
-    .modal.correct h2 { color: var(--neon); }
     .modal.correct { border-color: var(--neon); box-shadow: 0 0 40px var(--neon-dim); }
+    .modal.correct h2 { color: var(--neon); }
 
     /* wrong modal */
-    .modal.wrong h2 { color: var(--wrong); text-shadow: 0 0 18px var(--wrong-glow); }
     .modal.wrong { border-color: var(--wrong); box-shadow: 0 0 40px var(--wrong-glow); }
+    .modal.wrong h2 { color: var(--wrong); text-shadow: 0 0 18px var(--wrong-glow); }
 
     /* finish modal */
-    .modal.finish h2 { color: var(--gold); text-shadow: 0 0 18px var(--gold-glow); }
     .modal.finish { border-color: var(--gold); box-shadow: 0 0 40px var(--gold-glow); }
+    .modal.finish h2 { color: var(--gold); text-shadow: 0 0 18px var(--gold-glow); }
 
+    /* ═══════════════════════════════
+       GROUP SELECTION BUTTONS (5 tombol)
+    ═══════════════════════════════ */
+    .group-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 12px;
+      margin: 18px 0 6px;
+    }
+    .group-pick-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      padding: 16px 10px;
+      background: rgba(0,0,0,0.45);
+      border: 1.5px solid var(--glass-border);
+      border-radius: 16px;
+      color: var(--text); font-family: 'Poppins', sans-serif;
+      font-size: 0.82rem; font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(8px);
+    }
+    .group-pick-btn .gpb-icon { font-size: 1.7rem; }
+    .group-pick-btn .gpb-score {
+      font-size: 0.7rem; color: var(--neon);
+      font-weight: 700; text-shadow: 0 0 6px var(--neon-glow);
+    }
+    .group-pick-btn:hover {
+      border-color: var(--neon);
+      background: rgba(57,255,20,0.12);
+      box-shadow: 0 0 20px var(--neon-dim), inset 0 0 14px rgba(57,255,20,0.06);
+      transform: translateY(-4px) scale(1.04);
+      color: var(--neon);
+    }
+    .group-pick-btn:active { transform: scale(0.97); }
+
+    /* ═══════════════════════════════
+       SCORE LIST (finish modal)
+    ═══════════════════════════════ */
     .score-list {
       background: rgba(0,0,0,0.4);
       border: 1px solid var(--glass-border);
@@ -142,7 +169,11 @@
     }
     .score-row:last-child { border-bottom: none; }
     .score-row .grp { color: var(--text); font-weight: 500; }
-    .score-row .pts { color: var(--neon); font-weight: 700; font-size: 1rem; text-shadow: 0 0 8px var(--neon-glow); }
+    .score-row .pts {
+      color: var(--neon); font-weight: 700; font-size: 1rem;
+      text-shadow: 0 0 8px var(--neon-glow);
+    }
+    .score-row .pts.negative { color: var(--wrong); text-shadow: 0 0 8px var(--wrong-glow); }
 
     /* ═══════════════════════════════
        BUTTONS
@@ -152,6 +183,7 @@
       padding: 13px 34px; border: none; border-radius: 40px;
       font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.95rem;
       cursor: pointer; transition: all 0.28s ease; letter-spacing: 0.4px;
+      text-decoration: none;
     }
     .btn-neon {
       background: var(--neon); color: #000;
@@ -172,6 +204,26 @@
     }
     .btn-gold:hover { background: #fff5a0; box-shadow: 0 0 30px var(--gold-glow); transform: scale(1.04) translateY(-2px); }
 
+    /* "JAWAB SEKARANG" button — big & prominent */
+    .btn-jawab {
+      background: linear-gradient(135deg, #39ff14, #00cc0a);
+      color: #000; font-size: 1.1rem; font-weight: 800;
+      padding: 16px 42px; border-radius: 50px;
+      box-shadow: 0 0 28px var(--neon-glow), 0 4px 20px rgba(0,0,0,0.4);
+      letter-spacing: 0.5px;
+      animation: jawabPulse 1.8s ease-in-out infinite;
+    }
+    .btn-jawab:hover {
+      background: linear-gradient(135deg, #ffffff, #c8ffc0);
+      transform: scale(1.06) translateY(-3px);
+      box-shadow: 0 0 40px var(--neon-glow);
+      animation: none;
+    }
+    @keyframes jawabPulse {
+      0%,100% { box-shadow: 0 0 22px var(--neon-glow), 0 4px 20px rgba(0,0,0,0.4); }
+      50% { box-shadow: 0 0 40px var(--neon-glow), 0 0 60px rgba(57,255,20,0.35); }
+    }
+
     .btn-sm { padding: 9px 22px; font-size: 0.82rem; }
 
     /* ═══════════════════════════════
@@ -182,7 +234,6 @@
       padding: 100px 20px 60px;
       animation: fadeUp 0.7s ease both;
     }
-
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(14px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -195,13 +246,11 @@
       display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
     }
-
     .page-title-inline {
       font-family: 'Amiri', serif;
       font-size: clamp(1.4rem, 4vw, 1.9rem);
       color: var(--neon); text-shadow: 0 0 16px var(--neon-glow);
     }
-
     .scoreboard {
       background: rgba(0,0,0,0.5);
       border: 1px solid var(--glass-border);
@@ -214,6 +263,7 @@
     .score-chip { display: flex; flex-direction: column; align-items: center; gap: 1px; }
     .score-chip .s-name { font-size: 0.68rem; color: var(--sub); }
     .score-chip .s-pts { font-size: 1rem; font-weight: 700; color: var(--neon); text-shadow: 0 0 8px var(--neon-glow); }
+    .score-chip .s-pts.negative { color: var(--wrong); text-shadow: 0 0 8px var(--wrong-glow); }
 
     /* ═══════════════════════════════
        QUIZ CARD
@@ -228,6 +278,7 @@
       animation: fadeUp 0.5s ease both;
     }
 
+    /* PROGRESS BAR */
     .progress-bar-wrap {
       display: flex; align-items: center; gap: 14px; margin-bottom: 22px;
     }
@@ -243,6 +294,7 @@
       transition: width 0.5s ease;
     }
 
+    /* GROUP TAG */
     .group-tag {
       display: inline-block;
       background: rgba(57,255,20,0.12);
@@ -252,17 +304,78 @@
       margin-bottom: 14px;
     }
 
-    .question-num {
-      font-size: 0.8rem; color: var(--sub); margin-bottom: 6px; font-weight: 500;
-    }
-
+    .question-num { font-size: 0.8rem; color: var(--sub); margin-bottom: 6px; font-weight: 500; }
     .question-text {
       font-size: clamp(0.97rem, 2.5vw, 1.12rem);
       color: var(--text); line-height: 1.65;
       font-weight: 500; margin-bottom: 24px;
     }
 
-    /* OPTIONS */
+    /* ═══════════════════════════════
+       COUNTDOWN DISPLAY
+    ═══════════════════════════════ */
+    .countdown-wrap {
+      display: flex; flex-direction: column; align-items: center;
+      margin-bottom: 20px;
+      gap: 8px;
+    }
+    .countdown-label {
+      font-size: 0.72rem; font-weight: 600;
+      color: var(--sub); letter-spacing: 2px; text-transform: uppercase;
+    }
+    .countdown-ring {
+      position: relative; width: 90px; height: 90px;
+    }
+    .countdown-ring svg {
+      width: 90px; height: 90px;
+      transform: rotate(-90deg);
+    }
+    .countdown-ring .ring-bg {
+      fill: none; stroke: rgba(255,255,255,0.07);
+      stroke-width: 6;
+    }
+    .countdown-ring .ring-fill {
+      fill: none;
+      stroke-width: 6;
+      stroke-linecap: round;
+      stroke-dasharray: 226; /* 2π × 36 ≈ 226 */
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 0.9s linear, stroke 0.4s ease;
+    }
+    .countdown-number {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.4rem; font-weight: 800;
+      transition: color 0.4s ease;
+      /* color set by JS */
+    }
+    .countdown-number.pulse {
+      animation: cdPulse 0.4s ease;
+    }
+    @keyframes cdPulse {
+      0%   { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+    /* Glow pulse on card when timer near end */
+    .quiz-card.danger {
+      animation: cardDanger 0.5s ease-in-out infinite alternate;
+    }
+    @keyframes cardDanger {
+      from { box-shadow: 0 0 30px var(--neon-dim), inset 0 0 24px rgba(57,255,20,0.03); }
+      to   { box-shadow: 0 0 40px rgba(255,69,69,0.4), inset 0 0 30px rgba(255,69,69,0.06); border-color: rgba(255,69,69,0.5); }
+    }
+
+    /* ═══════════════════════════════
+       JAWAB BUTTON AREA
+    ═══════════════════════════════ */
+    .jawab-area {
+      display: flex; justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    /* ═══════════════════════════════
+       OPTIONS
+    ═══════════════════════════════ */
     .options { display: flex; flex-direction: column; gap: 12px; }
 
     .opt-btn {
@@ -276,13 +389,20 @@
       transition: all 0.25s ease;
       position: relative; overflow: hidden;
     }
-    .opt-btn:hover:not(:disabled) {
+    /* LOCKED state — before group chosen */
+    .opt-btn.locked {
+      opacity: 0.42; cursor: not-allowed;
+      filter: blur(0.5px);
+    }
+    .opt-btn.locked:hover { transform: none; border-color: rgba(57,255,20,0.18); background: rgba(0,0,0,0.38); box-shadow: none; }
+
+    .opt-btn:hover:not(:disabled):not(.locked) {
       border-color: var(--neon);
       background: rgba(57,255,20,0.08);
       box-shadow: 0 0 18px var(--neon-dim);
       transform: translateX(4px);
     }
-    .opt-btn:active:not(:disabled) { transform: scale(0.98); }
+    .opt-btn:active:not(:disabled):not(.locked) { transform: scale(0.98); }
 
     .opt-btn .opt-letter {
       width: 32px; height: 32px; min-width: 32px;
@@ -291,11 +411,10 @@
       font-weight: 700; font-size: 0.82rem; color: var(--neon);
       transition: all 0.25s;
     }
-    .opt-btn:hover:not(:disabled) .opt-letter {
+    .opt-btn:hover:not(:disabled):not(.locked) .opt-letter {
       background: var(--neon); color: #000;
       border-color: var(--neon); box-shadow: 0 0 10px var(--neon-glow);
     }
-
     .opt-btn.correct {
       border-color: var(--neon); background: rgba(57,255,20,0.15);
       box-shadow: 0 0 20px var(--neon-glow);
@@ -308,7 +427,37 @@
     }
     .opt-btn.wrong .opt-letter { background: var(--wrong); color: #fff; border-color: var(--wrong); }
 
-    .opt-btn:disabled { cursor: not-allowed; opacity: 0.7; }
+    .opt-btn:disabled { cursor: not-allowed; }
+
+    /* UNLOCK animation */
+    @keyframes unlockFlash {
+      0%   { background: rgba(57,255,20,0.25); }
+      100% { background: rgba(0,0,0,0.38); }
+    }
+    .opt-btn.unlock-flash {
+      animation: unlockFlash 0.5s ease;
+    }
+
+    /* ═══════════════════════════════
+       STATUS BADGE (bawah group-tag)
+    ═══════════════════════════════ */
+    .status-badge {
+      display: inline-block;
+      font-size: 0.72rem; font-weight: 600;
+      padding: 3px 12px; border-radius: 20px;
+      margin-bottom: 14px; margin-left: 8px;
+      vertical-align: middle;
+    }
+    .status-badge.waiting {
+      background: rgba(255,221,0,0.12);
+      border: 1px solid rgba(255,221,0,0.4);
+      color: #ffdd00;
+    }
+    .status-badge.ready {
+      background: rgba(57,255,20,0.12);
+      border: 1px solid var(--glass-border);
+      color: var(--neon);
+    }
 
     /* ═══════════════════════════════
        BOTTOM NAV
@@ -318,11 +467,18 @@
       margin-top: 50px; flex-wrap: wrap;
     }
 
-    /* RESPONSIF */
+    /* ═══════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════ */
     @media (max-width: 560px) {
       .quiz-card { padding: 22px 16px; }
-      .modal { padding: 30px 22px; }
+      .modal { padding: 28px 18px; }
       .scoreboard { font-size: 0.72rem; }
+      .group-grid { grid-template-columns: repeat(3, 1fr); }
+      .btn-jawab { font-size: 0.95rem; padding: 14px 28px; }
+    }
+    @media (max-width: 360px) {
+      .group-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -347,22 +503,23 @@
 <div class="overlay show" id="modal-welcome">
   <div class="modal">
     <span class="modal-icon">🕌</span>
-    <h2>AYO BIKIN<br>KELOMPOKMU!</h2>
-    <p>Kuis Cerdas Cermat Fiqih Puasa<br>Setiap kelompok berlomba meraih skor tertinggi!</p>
+    <h2>CERDAS CERMAT<br>FIQIH PUASA</h2>
+    <p>Kuis Seru MI Nurul Ilmi × UIN Sunan Kudus<br>5 Kelompok berlomba meraih skor tertinggi!</p>
     <button class="btn btn-neon" onclick="closeWelcome()">🚀 Mulai Kuis</button>
   </div>
 </div>
 
 <!-- ═══════════════════════════════════
-     MODAL 2 — PILIH KELOMPOK
+     MODAL 2 — PILIH KELOMPOK (5 tombol)
 ═══════════════════════════════════ -->
 <div class="overlay" id="modal-group">
   <div class="modal">
     <span class="modal-icon">🙋</span>
-    <h2>Kelompok Berapa<br>yang Terpilih?</h2>
-    <p>Masukkan nama atau nomor kelompok yang akan menjawab soal ini.</p>
-    <input type="text" id="group-input" placeholder="Contoh: Kelompok 1 / Tim Bintang" maxlength="30"/>
-    <button class="btn btn-neon" onclick="submitGroup()">Lanjut ke Soal ➜</button>
+    <h2>Kelompok Berapa<br>yang Menjawab?</h2>
+    <p>Pilih kelompok yang akan menjawab soal ini. Skor: <strong style="color:var(--neon)">+10</strong> benar • <strong style="color:var(--wrong)">−5</strong> salah</p>
+    <div class="group-grid" id="group-buttons">
+      <!-- rendered by JS so scores are live -->
+    </div>
   </div>
 </div>
 
@@ -415,284 +572,500 @@
   </div>
 </main>
 
+<!-- ═══════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════ -->
 <script>
-  /* ═══════════════════════
-     DATA SOAL
-  ═══════════════════════ */
-  const questions = [
-    {
-      q: "Puasa sunah adalah puasa yang jika dikerjakan akan mendapatkan pahala dan jika ditinggalkan…",
-      opts: ["Berdosa besar","Berdosa kecil","Tidak berdosa","Wajib diganti"],
-      ans: 2
-    },
-    {
-      q: "Berikut yang termasuk rukun puasa sunah adalah…",
-      opts: ["Membaca doa berbuka","Niat puasa","Membayar zakat","Bersedekah"],
-      ans: 1
-    },
-    {
-      q: "Waktu menahan diri dalam puasa dimulai dari…",
-      opts: ["Terbit matahari sampai terbenam","Tengah malam sampai subuh","Terbit fajar sampai terbenam matahari","Zuhur sampai magrib"],
-      ans: 2
-    },
-    {
-      q: "Berikut ini yang membatalkan puasa adalah…",
-      opts: ["Tidur di siang hari","Makan dengan sengaja","Berolahraga ringan","Membaca Al-Qur'an"],
-      ans: 1
-    },
-    {
-      q: "Orang yang muntah dengan sengaja saat berpuasa maka hukumnya…",
-      opts: ["Puasanya sah","Puasanya batal","Puasanya makruh","Puasanya sunnah"],
-      ans: 1
-    },
-    {
-      q: "Salah satu perbedaan puasa sunah dengan puasa wajib adalah…",
-      opts: ["Puasa sunah wajib diganti jika batal","Puasa wajib boleh dibatalkan tanpa sebab","Niat puasa sunah boleh dilakukan setelah fajar","Puasa wajib tidak perlu niat"],
-      ans: 2
-    },
-    {
-      q: "Puasa sunah boleh dibatalkan…",
-      opts: ["Hanya jika sakit","Jika ada uzur saja","Tanpa uzur","Jika disuruh orang tua"],
-      ans: 2
-    },
-    {
-      q: "Seorang istri yang ingin berpuasa sunah harus…",
-      opts: ["Bebas tanpa izin","Meminta izin suami","Menunggu waktu tertentu","Tidak boleh berpuasa"],
-      ans: 1
-    },
-    {
-      q: "Berikut yang termasuk puasa sunah adalah…",
-      opts: ["Puasa Ramadan","Puasa Nazar","Puasa Senin Kamis","Puasa Qadha"],
-      ans: 2
-    },
-    {
-      q: "Jika seseorang berniat membatalkan puasa di tengah hari, maka puasanya…",
-      opts: ["Tetap sah","Tidak berpengaruh","Menjadi makruh","Menjadi batal"],
-      ans: 3
-    }
-  ];
+/* ════════════════════════════════
+   KONSTANTA & DATA SOAL
+════════════════════════════════ */
+const LETTERS     = ['A','B','C','D'];
+const TIMER_START = 7;        // detik countdown
+const PTS_CORRECT = 10;
+const PTS_WRONG   = -5;
+const GROUPS = [
+  { id: 1, label: 'Kelompok 1', icon: '🟢' },
+  { id: 2, label: 'Kelompok 2', icon: '🔵' },
+  { id: 3, label: 'Kelompok 3', icon: '🟡' },
+  { id: 4, label: 'Kelompok 4', icon: '🔴' },
+  { id: 5, label: 'Kelompok 5', icon: '🟣' },
+];
 
-  const LETTERS = ['A','B','C','D'];
-
-  /* ═══════════════════════
-     STATE
-  ═══════════════════════ */
-  let currentQ   = 0;
-  let currentGrp = '';
-  let scores     = {};   // { "Kelompok 1": 20, ... }
-  let answered   = false;
-
-  /* ═══════════════════════
-     MODAL HELPERS
-  ═══════════════════════ */
-  function showOverlay(id) {
-    document.getElementById(id).classList.add('show');
+const questions = [
+  {
+    q: "Puasa sunah adalah puasa yang jika dikerjakan akan mendapatkan pahala dan jika ditinggalkan…",
+    opts: ["Berdosa besar","Berdosa kecil","Tidak berdosa","Wajib diganti"],
+    ans: 2
+  },
+  {
+    q: "Berikut yang termasuk rukun puasa sunah adalah…",
+    opts: ["Membaca doa berbuka","Niat puasa","Membayar zakat","Bersedekah"],
+    ans: 1
+  },
+  {
+    q: "Waktu menahan diri dalam puasa dimulai dari…",
+    opts: ["Terbit matahari sampai terbenam","Tengah malam sampai subuh","Terbit fajar sampai terbenam matahari","Zuhur sampai magrib"],
+    ans: 2
+  },
+  {
+    q: "Berikut ini yang membatalkan puasa adalah…",
+    opts: ["Tidur di siang hari","Makan dengan sengaja","Berolahraga ringan","Membaca Al-Qur'an"],
+    ans: 1
+  },
+  {
+    q: "Orang yang muntah dengan sengaja saat berpuasa maka hukumnya…",
+    opts: ["Puasanya sah","Puasanya batal","Puasanya makruh","Puasanya sunnah"],
+    ans: 1
+  },
+  {
+    q: "Salah satu perbedaan puasa sunah dengan puasa wajib adalah…",
+    opts: ["Puasa sunah wajib diganti jika batal","Puasa wajib boleh dibatalkan tanpa sebab","Niat puasa sunah boleh dilakukan setelah fajar","Puasa wajib tidak perlu niat"],
+    ans: 2
+  },
+  {
+    q: "Puasa sunah boleh dibatalkan…",
+    opts: ["Hanya jika sakit","Jika ada uzur saja","Tanpa uzur","Jika disuruh orang tua"],
+    ans: 2
+  },
+  {
+    q: "Seorang istri yang ingin berpuasa sunah harus…",
+    opts: ["Bebas tanpa izin","Meminta izin suami","Menunggu waktu tertentu","Tidak boleh berpuasa"],
+    ans: 1
+  },
+  {
+    q: "Berikut yang termasuk puasa sunah adalah…",
+    opts: ["Puasa Ramadan","Puasa Nazar","Puasa Senin Kamis","Puasa Qadha"],
+    ans: 2
+  },
+  {
+    q: "Jika seseorang berniat membatalkan puasa di tengah hari, maka puasanya…",
+    opts: ["Tetap sah","Tidak berpengaruh","Menjadi makruh","Menjadi batal"],
+    ans: 3
   }
-  function hideOverlay(id) {
-    document.getElementById(id).classList.remove('show');
+];
+
+/* ════════════════════════════════
+   STATE VARIABEL
+════════════════════════════════ */
+let currentQ    = 0;          // indeks soal aktif
+let currentGrp  = null;       // kelompok yang sedang menjawab (nama string)
+let scores      = {};         // { "Kelompok 1": 0, ... } — dapat negatif
+let answered    = false;      // sudah menjawab soal ini?
+let groupChosen = false;      // sudah pilih kelompok?
+let timerID     = null;       // setInterval ID
+let timeLeft    = TIMER_START;
+
+/* Inisialisasi skor semua kelompok = 0 */
+function initScores() {
+  scores = {};
+  GROUPS.forEach(g => { scores[g.label] = 0; });
+}
+initScores();
+
+/* ════════════════════════════════
+   AUDIO via Web Audio API (opsional)
+════════════════════════════════ */
+let audioCtx = null;
+
+function getAudioCtx() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
   }
+  return audioCtx;
+}
 
-  /* ═══════════════════════
-     WELCOME → GROUP PICKER
-  ═══════════════════════ */
-  function closeWelcome() {
-    hideOverlay('modal-welcome');
-    renderQuestion();
-    showOverlay('modal-group');
-    document.getElementById('group-input').focus();
-  }
+function beep(freq, type, duration, vol) {
+  const ctx = getAudioCtx();
+  if (!ctx) return;
+  try {
+    const osc  = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = type || 'sine';
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    gain.gain.setValueAtTime(vol || 0.12, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + duration);
+  } catch(e) {}
+}
 
-  /* ═══════════════════════
-     SUBMIT GROUP
-  ═══════════════════════ */
-  function submitGroup() {
-    const val = document.getElementById('group-input').value.trim();
-    if (!val) {
-      document.getElementById('group-input').style.borderColor = '#ff4545';
-      document.getElementById('group-input').placeholder = 'Wajib diisi!';
-      return;
-    }
-    document.getElementById('group-input').style.borderColor = '';
-    currentGrp = val;
-    if (!scores[currentGrp]) scores[currentGrp] = 0;
-    hideOverlay('modal-group');
-    document.getElementById('group-input').value = '';
-    document.getElementById('group-input').placeholder = 'Contoh: Kelompok 1 / Tim Bintang';
-    updateGroupTag();
-  }
+function soundTick()    { beep(440, 'sine', 0.12, 0.07); }
+function soundDanger()  { beep(300, 'square', 0.18, 0.09); }
+function soundCorrect() {
+  beep(523, 'sine', 0.12, 0.15);
+  setTimeout(() => beep(659, 'sine', 0.12, 0.15), 120);
+  setTimeout(() => beep(784, 'sine', 0.18, 0.15), 240);
+}
+function soundWrong() {
+  beep(220, 'square', 0.15, 0.12);
+  setTimeout(() => beep(180, 'square', 0.25, 0.12), 160);
+}
 
-  /* ═══════════════════════
-     RENDER QUESTION
-  ═══════════════════════ */
-  function renderQuestion() {
-    answered = false;
-    const q   = questions[currentQ];
-    const pct = ((currentQ) / questions.length) * 100;
+/* ════════════════════════════════
+   MODAL HELPERS
+════════════════════════════════ */
+function showOverlay(id) { document.getElementById(id).classList.add('show'); }
+function hideOverlay(id) { document.getElementById(id).classList.remove('show'); }
 
-    document.getElementById('quiz-card').innerHTML = `
-      <div class="progress-bar-wrap">
-        <span class="progress-label">Soal ${currentQ + 1} / ${questions.length}</span>
-        <div class="progress-track">
-          <div class="progress-fill" style="width:${pct}%"></div>
-        </div>
-      </div>
-      <div class="group-tag" id="group-tag">
-        ${currentGrp ? '🙋 ' + currentGrp : '⏳ Menunggu kelompok…'}
-      </div>
-      <div class="question-num">Pertanyaan ${currentQ + 1}</div>
-      <div class="question-text">${q.q}</div>
-      <div class="options" id="options">
-        ${q.opts.map((opt, i) => `
-          <button class="opt-btn" onclick="chooseAnswer(${i})" data-idx="${i}">
-            <span class="opt-letter">${LETTERS[i]}</span>
-            <span>${opt}</span>
-          </button>
-        `).join('')}
-      </div>
-    `;
-  }
-
-  function updateGroupTag() {
-    const el = document.getElementById('group-tag');
-    if (el) el.textContent = '🙋 ' + currentGrp;
-  }
-
-  /* ═══════════════════════
-     CHOOSE ANSWER
-  ═══════════════════════ */
-  function chooseAnswer(idx) {
-    if (answered) return;
-    answered = true;
-
-    const q    = questions[currentQ];
-    const correct = idx === q.ans;
-    const btns = document.querySelectorAll('.opt-btn');
-
-    btns.forEach(b => b.disabled = true);
-    btns[q.ans].classList.add('correct');
-    if (!correct) btns[idx].classList.add('wrong');
-
-    if (correct) {
-      scores[currentGrp] = (scores[currentGrp] || 0) + 10;
-    }
-
-    updateScoreboard();
-    setTimeout(() => showResult(correct), 700);
-  }
-
-  /* ═══════════════════════
-     SHOW RESULT POPUP
-  ═══════════════════════ */
-  function showResult(correct) {
-    const inner = document.getElementById('result-modal-inner');
-    const icon  = document.getElementById('result-icon');
-    const title = document.getElementById('result-title');
-    const body  = document.getElementById('result-body');
-
-    inner.className = 'modal ' + (correct ? 'correct' : 'wrong');
-
-    if (correct) {
-      icon.textContent  = '🎉';
-      title.textContent = 'JAWABAN BENAR!';
-      body.innerHTML    = `<strong style="color:var(--neon)">${currentGrp}</strong> mendapatkan <strong style="color:var(--neon)">+10 poin</strong>!<br>Total skor: <strong style="color:var(--neon)">${scores[currentGrp]}</strong>`;
-    } else {
-      icon.textContent  = '😢';
-      title.textContent = 'YAH, JAWABAN SALAH!';
-      body.innerHTML    = `<strong style="color:var(--wrong)">${currentGrp}</strong> tidak mendapat poin.<br>Jawaban yang benar: <strong style="color:var(--neon)">${LETTERS[questions[currentQ].ans]}. ${questions[currentQ].opts[questions[currentQ].ans]}</strong>`;
-    }
-    showOverlay('modal-result');
-  }
-
-  /* ═══════════════════════
-     NEXT QUESTION
-  ═══════════════════════ */
-  function nextQuestion() {
-    hideOverlay('modal-result');
-    currentQ++;
-
-    if (currentQ >= questions.length) {
-      showFinish();
-      return;
-    }
-
-    renderQuestion();
-    showOverlay('modal-group');
-    document.getElementById('group-input').focus();
-  }
-
-  /* ═══════════════════════
-     UPDATE SCOREBOARD
-  ═══════════════════════ */
-  function updateScoreboard() {
-    const sb = document.getElementById('scoreboard');
-    const entries = Object.entries(scores);
-    if (!entries.length) return;
-
-    sb.innerHTML = entries
-      .sort((a,b) => b[1] - a[1])
-      .map(([name, pts]) => `
-        <div class="score-chip">
-          <span class="s-name">${name}</span>
-          <span class="s-pts">${pts}</span>
-        </div>
-      `).join('');
-  }
-
-  /* ═══════════════════════
-     SHOW FINISH
-  ═══════════════════════ */
-  function showFinish() {
-    const list = document.getElementById('final-score-list');
-    const entries = Object.entries(scores).sort((a,b) => b[1]-a[1]);
-
-    if (!entries.length) {
-      list.innerHTML = '';
-    } else {
-      const medals = ['🥇','🥈','🥉'];
-      list.innerHTML = entries.map(([name, pts], i) => `
-        <div class="score-row">
-          <span class="grp">${medals[i] || '🏅'} ${name}</span>
-          <span class="pts">${pts} poin</span>
-        </div>
-      `).join('');
-    }
-
-    // fill quiz card with end state
-    document.getElementById('quiz-card').innerHTML = `
-      <div style="text-align:center;padding:40px 0;color:var(--sub);">
-        <div style="font-size:3rem;margin-bottom:12px;">🏁</div>
-        <div style="font-size:1.1rem;font-weight:600;color:var(--neon);">Semua soal telah selesai!</div>
-        <div style="font-size:0.88rem;margin-top:6px;">Lihat hasil di popup.</div>
-      </div>
-    `;
-
-    showOverlay('modal-finish');
-  }
-
-  /* ═══════════════════════
-     RESTART
-  ═══════════════════════ */
-  function restartQuiz() {
-    hideOverlay('modal-finish');
-    currentQ   = 0;
-    currentGrp = '';
-    scores     = {};
-    answered   = false;
-    document.getElementById('scoreboard').innerHTML =
-      '<span style="color:var(--sub);font-size:0.8rem;align-self:center">Skor akan muncul di sini</span>';
-    renderQuestion();
-    showOverlay('modal-welcome');
-  }
-
-  /* ═══════════════════════
-     ENTER KEY on input
-  ═══════════════════════ */
-  document.getElementById('group-input').addEventListener('keydown', e => {
-    if (e.key === 'Enter') submitGroup();
-  });
-
-  /* init */
+/* ════════════════════════════════
+   WELCOME → RENDER & MULAI
+════════════════════════════════ */
+function closeWelcome() {
+  hideOverlay('modal-welcome');
   renderQuestion();
+  // countdown dimulai setelah soal ter-render
+  startCountdown();
+}
+
+/* ════════════════════════════════
+   RENDER SOAL
+════════════════════════════════ */
+function renderQuestion() {
+  answered   = false;
+  groupChosen = false;
+  currentGrp  = null;
+  timeLeft    = TIMER_START;
+
+  const q   = questions[currentQ];
+  const pct = (currentQ / questions.length) * 100;
+  const card = document.getElementById('quiz-card');
+  card.classList.remove('danger');
+
+  card.innerHTML = `
+    <div class="progress-bar-wrap">
+      <span class="progress-label">Soal ${currentQ + 1} / ${questions.length}</span>
+      <div class="progress-track">
+        <div class="progress-fill" id="prog-fill" style="width:${pct}%"></div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+      <div class="group-tag" id="group-tag">⏳ Menunggu kelompok…</div>
+      <div class="status-badge waiting" id="status-badge">🔒 Terkunci</div>
+    </div>
+
+    <div class="question-num">Pertanyaan ${currentQ + 1}</div>
+    <div class="question-text">${q.q}</div>
+
+    <!-- COUNTDOWN -->
+    <div class="countdown-wrap" id="countdown-wrap">
+      <div class="countdown-label">Buka jawaban dalam</div>
+      <div class="countdown-ring" id="countdown-ring">
+        <svg viewBox="0 0 90 90">
+          <circle class="ring-bg" cx="45" cy="45" r="36"/>
+          <circle class="ring-fill" id="ring-fill" cx="45" cy="45" r="36"
+                  stroke="#39ff14"
+                  stroke-dasharray="226"
+                  stroke-dashoffset="0"/>
+        </svg>
+        <div class="countdown-number" id="countdown-number" style="color:#39ff14;">${TIMER_START}</div>
+      </div>
+    </div>
+
+    <!-- TOMBOL JAWAB SEKARANG -->
+    <div class="jawab-area" id="jawab-area">
+      <button class="btn btn-jawab" onclick="jawabSekarang()">🎯 JAWAB SEKARANG</button>
+    </div>
+
+    <!-- PILIHAN JAWABAN (terkunci dulu) -->
+    <div class="options" id="options">
+      ${q.opts.map((opt, i) => `
+        <button class="opt-btn locked" id="opt-${i}" onclick="chooseAnswer(${i})" data-idx="${i}" disabled>
+          <span class="opt-letter">${LETTERS[i]}</span>
+          <span>${opt}</span>
+        </button>
+      `).join('')}
+    </div>
+  `;
+}
+
+/* ════════════════════════════════
+   COUNTDOWN LOGIC
+════════════════════════════════ */
+function startCountdown() {
+  clearInterval(timerID);
+  timeLeft = TIMER_START;
+  updateCountdownVisual(timeLeft);
+
+  timerID = setInterval(() => {
+    timeLeft--;
+
+    // Sound
+    if (timeLeft > 0) {
+      if (timeLeft <= 2) soundDanger();
+      else soundTick();
+    }
+
+    // Danger glow saat 2 detik terakhir
+    const card = document.getElementById('quiz-card');
+    if (card) {
+      if (timeLeft <= 2) card.classList.add('danger');
+      else card.classList.remove('danger');
+    }
+
+    if (timeLeft <= 0) {
+      clearInterval(timerID);
+      openGroupModal();
+    } else {
+      updateCountdownVisual(timeLeft);
+    }
+  }, 1000);
+}
+
+function stopCountdown() {
+  clearInterval(timerID);
+  timerID = null;
+  // Sembunyikan countdown & tombol jawab
+  const wrap = document.getElementById('countdown-wrap');
+  const jawab = document.getElementById('jawab-area');
+  const card  = document.getElementById('quiz-card');
+  if (wrap)  wrap.style.display = 'none';
+  if (jawab) jawab.style.display = 'none';
+  if (card)  card.classList.remove('danger');
+}
+
+function updateCountdownVisual(n) {
+  const numEl  = document.getElementById('countdown-number');
+  const ringEl = document.getElementById('ring-fill');
+  if (!numEl || !ringEl) return;
+
+  // Warna berdasarkan waktu
+  let color;
+  if (n >= 5)      color = '#39ff14';   // hijau neon
+  else if (n >= 3) color = '#ffdd00';   // kuning
+  else             color = '#ff4545';   // merah
+
+  numEl.textContent = n;
+  numEl.style.color = color;
+  numEl.style.textShadow = `0 0 20px ${color}`;
+
+  // Animasi pulse tiap detik
+  numEl.classList.remove('pulse');
+  void numEl.offsetWidth; // reflow trick
+  numEl.classList.add('pulse');
+
+  // Ring stroke
+  const circumference = 226;
+  const pct = n / TIMER_START;
+  ringEl.style.strokeDashoffset = circumference * (1 - pct);
+  ringEl.style.stroke = color;
+  ringEl.style.filter = `drop-shadow(0 0 6px ${color})`;
+}
+
+/* ════════════════════════════════
+   JAWAB SEKARANG (tombol guru)
+════════════════════════════════ */
+function jawabSekarang() {
+  stopCountdown();
+  openGroupModal();
+}
+
+/* ════════════════════════════════
+   POPUP PILIH KELOMPOK
+════════════════════════════════ */
+function openGroupModal() {
+  // Render tombol kelompok dengan skor live
+  const container = document.getElementById('group-buttons');
+  container.innerHTML = GROUPS.map(g => {
+    const pts = scores[g.label];
+    const ptsClass = pts < 0 ? 'negative' : '';
+    return `
+      <button class="group-pick-btn" onclick="selectGroup('${g.label}')">
+        <span class="gpb-icon">${g.icon}</span>
+        <span>${g.label}</span>
+        <span class="gpb-score ${ptsClass}">${pts >= 0 ? '+' : ''}${pts} poin</span>
+      </button>
+    `;
+  }).join('');
+
+  showOverlay('modal-group');
+}
+
+/* ════════════════════════════════
+   PILIH KELOMPOK
+════════════════════════════════ */
+function selectGroup(grpLabel) {
+  hideOverlay('modal-group');
+  stopCountdown();
+
+  currentGrp  = grpLabel;
+  groupChosen = true;
+
+  // Update group tag & status
+  const tag    = document.getElementById('group-tag');
+  const badge  = document.getElementById('status-badge');
+  if (tag)   tag.textContent  = '🙋 ' + currentGrp;
+  if (badge) {
+    badge.textContent = '✅ Siap Menjawab';
+    badge.className   = 'status-badge ready';
+  }
+
+  // Unlock pilihan jawaban
+  document.querySelectorAll('.opt-btn').forEach(btn => {
+    btn.classList.remove('locked');
+    btn.removeAttribute('disabled');
+    btn.classList.add('unlock-flash');
+  });
+}
+
+/* ════════════════════════════════
+   PILIH JAWABAN
+════════════════════════════════ */
+function chooseAnswer(idx) {
+  // Double-guard: harus sudah pilih kelompok dan belum menjawab
+  if (!groupChosen || answered) return;
+  answered = true;
+
+  const q       = questions[currentQ];
+  const correct = idx === q.ans;
+  const btns    = document.querySelectorAll('.opt-btn');
+
+  // Disable semua tombol
+  btns.forEach(b => { b.disabled = true; b.classList.remove('unlock-flash'); });
+
+  // Visual benar/salah
+  btns[q.ans].classList.add('correct');
+  if (!correct) btns[idx].classList.add('wrong');
+
+  // Update skor (bisa negatif)
+  scores[currentGrp] = (scores[currentGrp] || 0) + (correct ? PTS_CORRECT : PTS_WRONG);
+
+  // Sound
+  if (correct) soundCorrect();
+  else soundWrong();
+
+  updateScoreboard();
+
+  // Tunda lalu tampilkan popup hasil
+  setTimeout(() => showResult(correct), 700);
+}
+
+/* ════════════════════════════════
+   POPUP HASIL
+════════════════════════════════ */
+function showResult(correct) {
+  const inner = document.getElementById('result-modal-inner');
+  const icon  = document.getElementById('result-icon');
+  const title = document.getElementById('result-title');
+  const body  = document.getElementById('result-body');
+  const pts   = scores[currentGrp];
+  const delta = correct ? `+${PTS_CORRECT}` : `${PTS_WRONG}`;
+  const clrDelta = correct ? 'var(--neon)' : 'var(--wrong)';
+
+  inner.className = 'modal ' + (correct ? 'correct' : 'wrong');
+
+  if (correct) {
+    icon.textContent  = '🎉';
+    title.textContent = 'JAWABAN BENAR!';
+    body.innerHTML    = `
+      <strong style="color:var(--neon)">${currentGrp}</strong>
+      mendapatkan
+      <strong style="color:${clrDelta};font-size:1.2rem">${delta} poin</strong>!<br>
+      Total skor: <strong style="color:var(--neon);font-size:1.1rem">${pts}</strong>`;
+  } else {
+    icon.textContent  = '😢';
+    title.textContent = 'YAH, JAWABAN SALAH!';
+    body.innerHTML    = `
+      <strong style="color:var(--wrong)">${currentGrp}</strong>
+      kehilangan
+      <strong style="color:${clrDelta};font-size:1.2rem">${Math.abs(PTS_WRONG)} poin</strong>!<br>
+      Total skor: <strong style="color:${pts < 0 ? 'var(--wrong)' : 'var(--neon)'};font-size:1.1rem">${pts}</strong><br>
+      <span style="font-size:0.83rem;color:var(--sub);margin-top:6px;display:block;">
+        Jawaban benar: <strong style="color:var(--neon)">${LETTERS[questions[currentQ].ans]}. ${questions[currentQ].opts[questions[currentQ].ans]}</strong>
+      </span>`;
+  }
+
+  showOverlay('modal-result');
+}
+
+/* ════════════════════════════════
+   SOAL BERIKUTNYA
+════════════════════════════════ */
+function nextQuestion() {
+  hideOverlay('modal-result');
+  currentQ++;
+
+  if (currentQ >= questions.length) {
+    showFinish();
+    return;
+  }
+
+  renderQuestion();
+  startCountdown();
+}
+
+/* ════════════════════════════════
+   UPDATE SCOREBOARD (header)
+════════════════════════════════ */
+function updateScoreboard() {
+  const sb = document.getElementById('scoreboard');
+  const entries = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  if (!entries.length) return;
+
+  sb.innerHTML = entries.map(([name, pts]) => {
+    const neg = pts < 0;
+    return `
+      <div class="score-chip">
+        <span class="s-name">${name.replace('Kelompok ','Klp ')}</span>
+        <span class="s-pts ${neg ? 'negative' : ''}">${pts}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+/* ════════════════════════════════
+   HALAMAN SELESAI
+════════════════════════════════ */
+function showFinish() {
+  const list    = document.getElementById('final-score-list');
+  const entries = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  const medals  = ['🥇','🥈','🥉'];
+
+  list.innerHTML = entries.map(([name, pts], i) => {
+    const neg = pts < 0;
+    return `
+      <div class="score-row">
+        <span class="grp">${medals[i] || '🏅'} ${name}</span>
+        <span class="pts ${neg ? 'negative' : ''}">${pts} poin</span>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('quiz-card').innerHTML = `
+    <div style="text-align:center;padding:40px 0;color:var(--sub);">
+      <div style="font-size:3rem;margin-bottom:12px;">🏁</div>
+      <div style="font-size:1.1rem;font-weight:600;color:var(--neon);">Semua soal telah selesai!</div>
+      <div style="font-size:0.88rem;margin-top:6px;">Lihat hasil lengkap di popup.</div>
+    </div>
+  `;
+
+  showOverlay('modal-finish');
+}
+
+/* ════════════════════════════════
+   RESTART
+════════════════════════════════ */
+function restartQuiz() {
+  hideOverlay('modal-finish');
+  clearInterval(timerID);
+  currentQ    = 0;
+  currentGrp  = null;
+  groupChosen = false;
+  answered    = false;
+  initScores();
+  document.getElementById('scoreboard').innerHTML =
+    '<span style="color:var(--sub);font-size:0.8rem;align-self:center">Skor akan muncul di sini</span>';
+  renderQuestion();
+  showOverlay('modal-welcome');
+}
+
+/* ════════════════════════════════
+   INIT — render soal pertama
+   (belum mulai countdown, tunggu welcome)
+════════════════════════════════ */
+renderQuestion();
 </script>
 </body>
 </html>
